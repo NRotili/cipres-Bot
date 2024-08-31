@@ -1,0 +1,34 @@
+import { addKeyword, EVENTS } from "@builderbot/bot";
+import { welcomeFlow } from "./welcome.flow";
+import { backFlow } from "./back.flow";
+
+const empresaFlow = addKeyword(EVENTS.ACTION)
+    .addAnswer("Perfecto, qué deseas realizar?", {delay: 1000})
+    .addAnswer(['1️⃣. Consulta',
+        '2️⃣. Pedido',
+        '9️⃣. Volver'], {delay: 1000, capture: true}, 
+    async (ctx, ctxFn) => {
+        const bodyText: string = ctx.body.toLowerCase();
+        const keywords: string[] = ['1', 'consulta', '2', 'pedido', '9', 'volver'];
+        const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
+
+        if (containsKeyword) {
+            switch (bodyText) {
+                case '1':
+                case 'consulta':
+                    await ctxFn.flowDynamic("Mientras un agente se conecta, por favor ingresa tu consulta");
+                    break;
+                case '2':
+                case 'pedido':
+                    await ctxFn.flowDynamic("Mientras un agente se conecta, por favor ingresa tu pedido");
+                    break;
+                case '9':
+                case 'volver':
+                    return ctxFn.gotoFlow(backFlow);
+            }
+        } else {
+            return ctxFn.fallBack("Debes seleccionar una opción válida");
+        }
+    });
+
+export { empresaFlow };
