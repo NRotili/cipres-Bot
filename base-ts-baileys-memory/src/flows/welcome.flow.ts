@@ -1,8 +1,13 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { empresaFlow } from "./empresa.flow";
+import { revendedorFlow } from "./revendedor.flow";
+import { consumidorFinalFlow } from "./consumidorFinal.flow";
 
 const welcomeFlow = addKeyword(EVENTS.WELCOME)
-    .addAnswer("Hola!! Estás hablando con CIPRES! 🤖", {delay: 2000})
+    .addAction(async (ctx, ctxFn) => {
+        console.log(ctx)
+        return ctxFn.flowDynamic("Hola "+ ctx.name + "!! Estás hablando con CIPRES!")
+    })
     .addAnswer("Espero estés muy bien! 😀", {delay: 2000})
     .addAnswer("Qué tipo de cliente eres? Por favor responde con el número de la opción! 🙏", {delay:500})
     .addAnswer(['1️⃣. Empresa',
@@ -18,6 +23,12 @@ const welcomeFlow = addKeyword(EVENTS.WELCOME)
                 case '1':
                 case 'empresa':
                     return ctxFn.gotoFlow(empresaFlow);
+                case '2':
+                case 'revendedor':
+                    return ctxFn.gotoFlow(revendedorFlow);
+                case '3':
+                case 'consumidor final':
+                    return ctxFn.gotoFlow(consumidorFinalFlow);
             }
         } else {
             return ctxFn.fallBack("Ups, parece que tu respuesta no está entre mis opciones 😅");

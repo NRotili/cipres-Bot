@@ -1,6 +1,16 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
-import { welcomeFlow } from "./welcome.flow";
 import { backFlow } from "./back.flow";
+import { start } from "~/utils/idle-custom";
+
+
+const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
+    .addAction(async (ctx, { gotoFlow, blacklist }) => {
+        //Revisar estas acciones
+        // start(ctx, gotoFlow, 10000)
+        // blacklist.add(ctx.from)
+    })
+    .addAnswer("Perfecto, esperamos tu consulta para derivarte con nuestros asesores...", {capture: true, delay: 1000})
+
 
 const empresaFlow = addKeyword(EVENTS.ACTION)
     .addAnswer("Perfecto, qué deseas realizar?", {delay: 1000})
@@ -16,8 +26,7 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
             switch (bodyText) {
                 case '1':
                 case 'consulta':
-                    await ctxFn.flowDynamic("Mientras un agente se conecta, por favor ingresa tu consulta");
-                    break;
+                    return ctxFn.gotoFlow(empresaConsultaFlow);
                 case '2':
                 case 'pedido':
                     await ctxFn.flowDynamic("Mientras un agente se conecta, por favor ingresa tu pedido");
@@ -27,8 +36,9 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(backFlow);
             }
         } else {
+
             return ctxFn.fallBack("Debes seleccionar una opción válida");
         }
     });
 
-export { empresaFlow };
+export { empresaFlow, empresaConsultaFlow };
