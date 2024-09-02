@@ -1,6 +1,7 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { empresaFlow } from "./empresa.flow";
 import { revendedorFlow } from "./revendedor.flow";
+import { consumidorFinalFlow } from "./consumidorFinal.flow";
 
 const backFlow = addKeyword(EVENTS.ACTION)
     .addAnswer("Buenísimo, estamos volviendo al menú principal", { delay: 500 })
@@ -18,6 +19,9 @@ const backFlow = addKeyword(EVENTS.ACTION)
                     case '2':
                     case 'revendedor':
                         return ctxFn.gotoFlow(revendedorFlow);
+                    case '3':
+                    case 'consumidor final':
+                        return ctxFn.gotoFlow(consumidorFinalFlow);
                 }
             } else {
                 return ctxFn.fallBack("Ups, parece que tu respuesta no está entre mis opciones 😅")
