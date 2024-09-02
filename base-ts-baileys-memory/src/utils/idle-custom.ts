@@ -4,30 +4,30 @@ import { BotContext, TFlow } from '@builderbot/bot/dist/types';
 // Object to store timers for each user
 const timers = {};
 
-// Flow for handling inactivity
+// Flow for handling inactivity sin terminar flujo
 const idleFlow = addKeyword(EVENTS.ACTION).addAction(
-    async (_, { endFlow }) => {
-        return endFlow("Hola? Estás ahí? Parece que te has ido 😢");
+    async (_, { flowDynamic }) => {
+        await flowDynamic("Hola? Estás ahí? Parece que te has ido 😢");
     }
 );
 
 // Function to start the inactivity timer for a user
-const start = (ctx: BotContext, gotoFlow: (a: TFlow) => Promise<void>, ms: number) => {
+const start = (ctx: BotContext, flowDynamic, ms: number) => {
     console.log(`start countdown for the user: ${ctx.from}`);
-    timers[ctx.from] = setTimeout(() => {
-        console.log(`User timeout: ${ctx.from}`);
-        return gotoFlow(idleFlow);
+    timers[ctx.from] = setTimeout( async () => {
+        console.log(`User timeout: ${ctx.from}, ${ms}ms, `);
+        await flowDynamic("Hola? Estás ahí? Parece que te has ido 😢");
     }, ms);
 }
 
 // Function to reset the inactivity timer for a user
-const reset = (ctx: BotContext, gotoFlow: (a: TFlow) => Promise<void>, ms: number) => {
+const reset = (ctx: BotContext, flowDynamic, ms: number) => {
     stop(ctx);
     if (timers[ctx.from]) {
         console.log(`reset countdown for the user: ${ctx.from}`);
         clearTimeout(timers[ctx.from]);
     }
-    start(ctx, gotoFlow, ms);
+    start(ctx, flowDynamic, ms);
 }
 
 // Function to stop the inactivity timer for a user

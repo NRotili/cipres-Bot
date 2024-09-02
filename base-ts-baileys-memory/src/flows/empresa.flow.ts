@@ -1,6 +1,8 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { backFlow } from "./back.flow";
-import { start } from "~/utils/idle-custom";
+import { reset } from "~/utils/idle-custom";
+import { config } from "dotenv";
+config()
 
 
 const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
@@ -13,6 +15,9 @@ const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
 
 
 const empresaFlow = addKeyword(EVENTS.ACTION)
+    .addAction(async (ctx, { flowDynamic }) => {
+        reset(ctx, flowDynamic, 300000);
+    })
     .addAnswer("Perfecto, qué deseas realizar?", {delay: 1000})
     .addAnswer(['1️⃣. Consulta',
         '2️⃣. Pedido',
