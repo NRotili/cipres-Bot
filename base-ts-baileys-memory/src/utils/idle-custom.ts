@@ -33,6 +33,7 @@ const reset = (ctx: BotContext, flowDynamic, ms: number) => {
 // Function to stop the inactivity timer for a user
 const stop = (ctx: BotContext) => {
     if (timers[ctx.from]) {
+        console.log(`stop countdown for the user: ${ctx.from}`);
         clearTimeout(timers[ctx.from]);
     }
 }

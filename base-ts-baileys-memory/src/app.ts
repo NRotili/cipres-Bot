@@ -3,17 +3,19 @@ import { createBot, createProvider, createFlow } from '@builderbot/bot'
 import { MemoryDB as Database } from '@builderbot/bot'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { welcomeFlow } from './flows/welcome.flow'
-import { empresaConsultaFlow, empresaFlow } from './flows/empresa.flow'
+import { empresaConsultaFlow, empresaFlow, empresaPedidoFlow } from './flows/empresa.flow'
 import { backFlow } from './flows/back.flow'
 import { revendedorFlow } from './flows/revendedor.flow'
-import { revendedorAromatizacionConsultaFlow, revendedorAromatizacionFlow } from './flows/revendedorAromatizacion.flow'
-import { revendedorAromatizacionConsultaHorariosFlow, revendedorAromatizacionConsultaMetodologiaFlow, revendedorAromatizacionConsultaPreciosFlow } from './flows/revendedorAromatizacionConsulta.flow'
+import { revendedorAromatizacionConsultaFlow, revendedorAromatizacionFlow, revendedorAromatizacionPedidoFlow, revendedorAromatizacionPedidoRecibidoFlow } from './flows/revendedorAromatizacion.flow'
+import { revendedorAromatizacionConsultaAsesorFlow, revendedorAromatizacionConsultaHorariosFlow, revendedorAromatizacionConsultaMetodologiaFlow, revendedorAromatizacionConsultaPreciosFlow } from './flows/revendedorAromatizacionConsulta.flow'
 import { idleFlow } from './utils/idle-custom'
-import { revendedorGeneralConsultaFlow, revendedorGeneralFlow } from './flows/revendedorGeneral.flow'
-import { revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow } from './flows/revendedorGeneralConsulta.flow'
+import { revendedorGeneralConsultaFlow, revendedorGeneralFlow, revendedorGeneralPedidoFlow } from './flows/revendedorGeneral.flow'
+import { revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow } from './flows/revendedorGeneralConsulta.flow'
 import { consumidorFinalConsultaFlow, consumidorFinalFlow } from './flows/consumidorFinal.flow'
 import { consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow } from './flows/consumidorFinalConsulta.flow'
 import { audioFlow } from './flows/audio.flow'
+import { config } from 'dotenv'
+config()
 
 const PORT = process.env.PORT ?? 3008
 
@@ -35,13 +37,19 @@ const main = async () => {
         welcomeFlow, 
         empresaFlow,
         empresaConsultaFlow, 
+        empresaPedidoFlow,
         revendedorFlow, 
         revendedorAromatizacionFlow,
+        revendedorAromatizacionPedidoFlow,
+        revendedorAromatizacionPedidoRecibidoFlow,
         revendedorAromatizacionConsultaFlow,
+        revendedorAromatizacionConsultaAsesorFlow,
         revendedorAromatizacionConsultaMetodologiaFlow,
         revendedorAromatizacionConsultaPreciosFlow,
         revendedorAromatizacionConsultaHorariosFlow,
-        revendedorGeneralFlow, revendedorGeneralConsultaFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow, consumidorFinalFlow, consumidorFinalConsultaFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow,
+        revendedorGeneralFlow,
+        revendedorGeneralPedidoFlow,
+        revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow, consumidorFinalFlow, consumidorFinalConsultaFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow,
         backFlow, idleFlow])
     
     const adapterProvider = createProvider(Provider)

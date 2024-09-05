@@ -1,10 +1,44 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { revendedorFlow } from "./revendedor.flow";
-import { revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow } from "./revendedorGeneralConsulta.flow";
+import { revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow } from "./revendedorGeneralConsulta.flow";
+import { reset, stop } from "~/utils/idle-custom";
+import axios from "axios";
+import { config } from "dotenv";
 
-
+const revendedorGeneralPedidoFlow = addKeyword(EVENTS.ACTION)
+.addAnswer(
+    "Te estoy derivando con nuestro personal de atención. 😎",
+    { delay: 1000 }
+  )
+  .addAction(async (ctx, { flowDynamic, blacklist }) => {
+    config();
+    try {
+      const response = await axios.post(
+        process.env.URL_WEB + "wsp/listaEspera",
+        {
+          nombre: ctx.name,
+          consulta: "Pedido",
+          telefono: ctx.from,
+          tipo: "Revendedor - General - Pedido",
+        }
+      );
+      await flowDynamic(
+        "Tu posición en la lista de espera es: *" +
+          response.data.cantEsperando +
+          "*, por favor aguarda a ser atendido. 😁"
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    stop(ctx);
+    blacklist.add(ctx.from);
+  })
+  .addAnswer("Mientras tanto, anda detallando tu pedido... 📝");
 
 const revendedorGeneralConsultaFlow = addKeyword(EVENTS.ACTION)
+    .addAction(async (ctx, { flowDynamic }) => {
+        reset(ctx, flowDynamic, 300000);
+    })
     .addAnswer("Ok! Selecciona la opción...", {delay: 1000})
     .addAnswer(['1️⃣. Metodología',
         '2️⃣. Precios',
@@ -29,8 +63,7 @@ const revendedorGeneralConsultaFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(revendedorGeneralConsultaHorariosFlow);
                 case '4':
                 case 'asesor':
-                    await ctxFn.flowDynamic("El asesor es...");
-                    break;
+                    return ctxFn.gotoFlow(revendedorGeneralConsultaAsesorFlow);
                 case '9':
                 case 'volver':
                     return ctxFn.gotoFlow(revendedorFlow);
@@ -42,6 +75,9 @@ const revendedorGeneralConsultaFlow = addKeyword(EVENTS.ACTION)
 
 
 const revendedorGeneralFlow = addKeyword(EVENTS.ACTION)
+    .addAction(async (ctx, { flowDynamic }) => {
+        reset(ctx, flowDynamic, 300000);
+    })
     .addAnswer("Bien, qué deseas?", {delay: 1000})
     .addAnswer(['1️⃣. Consulta',
         '2️⃣. Pedido',
@@ -58,8 +94,7 @@ const revendedorGeneralFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
                 case '2':
                 case 'pedido':
-                    await ctxFn.flowDynamic("Para realizar un pedido, por favor comunícate con tu asesor de ventas.");
-                    break;
+                    return ctxFn.gotoFlow(revendedorGeneralPedidoFlow);
                 case '9':
                 case 'volver':
                     return ctxFn.gotoFlow(revendedorFlow);
@@ -69,4 +104,4 @@ const revendedorGeneralFlow = addKeyword(EVENTS.ACTION)
         }
     });
 
-export { revendedorGeneralFlow, revendedorGeneralConsultaFlow };
+export { revendedorGeneralFlow, revendedorGeneralConsultaFlow, revendedorGeneralPedidoFlow };

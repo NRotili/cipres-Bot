@@ -1,9 +1,13 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { consumidorFinalConsultaFlow } from "./consumidorFinal.flow";
+import { reset } from "~/utils/idle-custom";
 
 // const revendedorAromatizacionConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
 
 const consumidorFinalConsultaEnviosFlow = addKeyword(EVENTS.ACTION)
+    .addAction(async (ctx, { flowDynamic }) => {
+        reset(ctx, flowDynamic, 300000);
+    })
     .addAnswer([
         "📦 PEDIDOS Y ENVIOS ",
         "🛒 COMPRAS minoristas",
@@ -38,6 +42,9 @@ const consumidorFinalConsultaEnviosFlow = addKeyword(EVENTS.ACTION)
     });
 
 const consumidorFinalConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
+    .addAction(async (ctx, { flowDynamic }) => {
+        reset(ctx, flowDynamic, 300000);
+    })
     .addAnswer("Te comparto el link para que puedas acceder a nuestro catalogo online exclusivo para clientes! 😉", {delay: 1000})
     .addAnswer("https://catalogos.cipresdigital.com.ar/catalogo/consfinal/Consumidor.Final", {delay: 1000})
     .addAnswer(['Otra consulta? 🤔','1️⃣. Sí', '2️⃣. No'], {delay: 1000, capture: true},
@@ -62,6 +69,9 @@ const consumidorFinalConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
     });
 
 const consumidorFinalConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
+    .addAction(async (ctx, { flowDynamic }) => {
+        reset(ctx, flowDynamic, 300000);
+    })
     .addAnswer(["🕥 Lunes a Viernes de 8hs a 18hs",
         "🕥 Sábados de 8:30hs a 13hs."], {delay: 1000})
     .addAnswer(["IMPORTANTE ⚠️",

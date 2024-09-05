@@ -2,8 +2,12 @@ import { addKeyword, EVENTS } from "@builderbot/bot";
 import { empresaFlow } from "./empresa.flow";
 import { revendedorFlow } from "./revendedor.flow";
 import { consumidorFinalFlow } from "./consumidorFinal.flow";
+import { reset } from "~/utils/idle-custom";
 
 const backFlow = addKeyword(EVENTS.ACTION)
+    .addAction(async (ctx, { flowDynamic }) => {
+        reset(ctx, flowDynamic, 300000);
+    })
     .addAnswer("Buenísimo, estamos volviendo al menú principal", { delay: 500 })
     .addAnswer("Qué tipo de cliente eres? 🧐", { delay: 500 })
     .addAnswer(['1️⃣. Empresa', '2️⃣. Revendedor', '3️⃣. Consumidor Final'], { capture: true },
