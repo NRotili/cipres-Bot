@@ -3,6 +3,7 @@ import { revendedorAromatizacionConsultaFlow } from "./revendedorAromatizacion.f
 import { reset, stop } from "~/utils/idle-custom";
 import axios from "axios";
 import { config } from "dotenv";
+import { finalFlow } from "./final.flow";
 
 
 const revendedorAromatizacionConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
@@ -34,7 +35,7 @@ const revendedorAromatizacionConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
           case "2":
           case "no":
-            return ctxFn.endFlow();
+            return ctxFn.gotoFlow(finalFlow);
         }
       } else {
         return ctxFn.fallBack(
@@ -84,7 +85,7 @@ const revendedorAromatizacionConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
           case "2":
           case "no":
-            return ctxFn.endFlow();
+            return ctxFn.gotoFlow(finalFlow);
         }
       } else {
         return ctxFn.fallBack(
@@ -123,7 +124,7 @@ const revendedorAromatizacionConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
           case "2":
           case "no":
-            return ctxFn.endFlow("Gracias por tu consulta! 😊");
+            return ctxFn.gotoFlow(finalFlow);
         }
       } else {
         return ctxFn.fallBack("Tienes que seleccionar una de las opciones");

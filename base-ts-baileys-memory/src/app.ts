@@ -15,6 +15,7 @@ import { consumidorFinalConsultaFlow, consumidorFinalFlow } from './flows/consum
 import { consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow } from './flows/consumidorFinalConsulta.flow'
 import { audioFlow } from './flows/audio.flow'
 import { config } from 'dotenv'
+import { finalFlow } from './flows/final.flow'
 config()
 
 const PORT = process.env.PORT ?? 3008
@@ -34,6 +35,7 @@ const PORT = process.env.PORT ?? 3008
 const main = async () => {
     const adapterFlow = createFlow([
         audioFlow,
+        finalFlow,
         welcomeFlow, 
         empresaFlow,
         empresaConsultaFlow, 

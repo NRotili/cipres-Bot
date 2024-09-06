@@ -1,6 +1,7 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { consumidorFinalConsultaFlow } from "./consumidorFinal.flow";
 import { reset } from "~/utils/idle-custom";
+import { finalFlow } from "./final.flow";
 
 // const revendedorAromatizacionConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
 
@@ -34,7 +35,7 @@ const consumidorFinalConsultaEnviosFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
                 case '2':
                 case 'no':
-                    return ctxFn.endFlow();
+                    return ctxFn.gotoFlow(finalFlow);
             }
         } else {
             return ctxFn.fallBack("Debes seleccionar una opción válida");
@@ -61,7 +62,7 @@ const consumidorFinalConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
                 case '2':
                 case 'no':
-                    return ctxFn.endFlow();
+                    return ctxFn.gotoFlow(finalFlow);
             }
         } else {
             return ctxFn.fallBack("Parece que esa opción no es válida. 🤯");
@@ -90,7 +91,7 @@ const consumidorFinalConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
                 case '2':
                 case 'no':
-                    return ctxFn.endFlow();
+                    return ctxFn.gotoFlow(finalFlow);
             }
         } else {
             return ctxFn.fallBack("Tienes que seleccionar una de las opciones");

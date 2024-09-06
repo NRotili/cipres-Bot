@@ -3,6 +3,7 @@ import { revendedorGeneralConsultaFlow } from "./revendedorGeneral.flow";
 import { reset, stop } from "~/utils/idle-custom";
 import axios from "axios";
 import { config } from "dotenv";
+import { finalFlow } from "./final.flow";
 
 const revendedorGeneralConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {
@@ -69,7 +70,7 @@ const revendedorGeneralConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
           case "2":
           case "no":
-            return ctxFn.endFlow();
+            return ctxFn.gotoFlow(finalFlow);
         }
       } else {
         return ctxFn.fallBack("Tienes que seleccionar una de las opciones");
@@ -109,7 +110,7 @@ const revendedorGeneralConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
           case "2":
           case "no":
-            return ctxFn.endFlow();
+            return ctxFn.gotoFlow(finalFlow);
         }
       } else {
         return ctxFn.fallBack(
@@ -148,7 +149,7 @@ const revendedorGeneralConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
           case "2":
           case "no":
-            return ctxFn.endFlow("Gracias por tu consulta! 😊");
+            return ctxFn.gotoFlow(finalFlow);
         }
       } else {
         return ctxFn.fallBack("Tienes que seleccionar una de las opciones");
