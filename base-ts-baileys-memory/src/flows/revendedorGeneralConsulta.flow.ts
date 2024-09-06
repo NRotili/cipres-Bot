@@ -84,11 +84,15 @@ const revendedorGeneralConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
   })
   .addAnswer(
     [
-      "🛍️ Compra inicial de $50.000",
-      "🛍️ Mensualmente se deberá respetar ese mínimo de compra.",
-      "💰 Forma de pago: Contado/Efectivo.",
-      "🕥 Las compras se realizan: de Lunes a Viernes de 8 hs a 18 hs. (no se atienden revendedores/compras mayoristas los días sábados).",
-      "📦 Realizamos envíos: consultar condiciones (zonas / valor / fecha de entrega).",
+      "🛍️ *Compra inicial* de *$70.000*, para apertura de cuenta ",
+      "💰 *Forma de pago*: Efectivo | Transferencia con un 5% de recargo.",
+      "🕥 *Las compras se realizan*: de Lunes a Viernes de 8 hs a 18 hs. (no se atienden revendedores los días sábados).",
+      "📦 *Realizamos envíos*: días y horarios a coordinar.",
+      " ",
+      "VALOR DE ENVÍO",
+      "📍Villa Constitucion: compras mayores a $70.000 envío SIN CARGO | compras menores envío $1500",
+      "📍Empalme/Pavón: compras mayores a $80.000 envío SIN CARGO | compras menores envío $2500",
+      "📍San Nicolás/Arroyo: compras mayores a $100.000 envío SIN CARGO | compras menores envío $5000",
       "📋 Asesoramiento y cotizaciones: de Lunes a Viernes de 8 hs. a 18 hs. en 📍 Urquiza 721, Villa Constitución.",
     ],
     { delay: 1000 }

@@ -58,13 +58,13 @@ const revendedorAromatizacionConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
   )
   .addAnswer(
     [
-      "🛍️ Compra mínima de $30.000 para apertura de cuenta.",
-      "💰 Forma de pago: Efectivo | Transferencia con un 5% de recargo.",
-      "🕥 Las compras se realizan: de Lunes a viernes de 8 hs a 18 hs. (no se atienden revendedores los días sábados).",
-      "📋 Se debe solicitar Planilla para Pedidos solo para envíos fuera de la ciudad de Villa Constitución.",
-      "🛒 Armado del pedido: entre 48/72 hs.",
-      "🚛 Envío: a cargo del cliente (comisionista/cadete).",
-      "🧑🏽‍💻 Asesoramiento y cotizaciones: de Lunes a Viernes de 8 hs. a 18 hs. en 📍 Urquiza 721, Villa Constitución.",
+      "🛍️ *Compra mínima* de *$50.000* para apertura de cuenta.",
+      "💰 *Forma de pago*: Efectivo | Transferencia con un 5% de recargo.",
+      "🕥 *Las compras se realizan*: de Lunes a viernes de 8 hs a 18 hs. (no se atienden revendedores los días sábados).",
+      "📋 Se debe *solicitar Planilla para Pedidos* solo para envíos fuera de la ciudad de Villa Constitución.",
+      "🛒 *Armado del pedido*: entre 48/72 hs.",
+      "🚛 *Envío*: a cargo del cliente (comisionista/cadete).",
+      "🧑🏽‍💻 *Asesoramiento y cotizaciones*: de Lunes a Viernes de 8 hs. a 18 hs. en 📍 Urquiza 721, Villa Constitución.",
     ],
     { delay: 1000 }
   )

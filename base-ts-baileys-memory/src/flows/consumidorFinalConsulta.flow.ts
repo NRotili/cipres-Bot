@@ -17,7 +17,7 @@ const consumidorFinalConsultaEnviosFlow = addKeyword(EVENTS.ACTION)
         "♻️ DEVOLUCIÓN BIDONES",
         "Para que no abone doble viaje se adjunta en el ticket de compra el valor del mismo para poder canjearlo cuando desee. El comprobante deberá ser presentado junto con el bidón vacío en perfecto estado para la devolución del dinero.",
         "🚛 ENVIO GRATIS",
-        "Para compras superiores a $10.000 👉🏽 entregas por la mañana, coordinando un día de la semana.",
+        "Para compras superiores a $15.000 👉🏽 entregas por la mañana, coordinando un día de la semana.",
         "📲 REALICE SU PEDIDO Y RETIRE POR NUESTRO LOCAL",
         "Brindamos también la posibilidad de armarle su pedido para ser retirado sin demoras por nuestro local de 📍Urquiza 721, Villa Constitución de 🕚 Lunes a Viernes de 8 a 18 y Sábados de 8:30 a 13."
     ], {delay: 1000})
