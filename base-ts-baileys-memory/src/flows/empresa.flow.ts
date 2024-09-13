@@ -13,16 +13,16 @@ const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
     "Perfecto, esperamos tu consulta para derivarte con nuestros asesores... 🧐",
     { capture: true, delay: 1000 }
   )
-  .addAction(async (ctx, { flowDynamic, blacklist }) => {
+  .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
     try {
-      const response = await axios.post(
-        process.env.URL_WEB + "wsp/listaEspera",
+      const myState = state.getMyState();
+      const response = await axios.put(
+        process.env.URL_WEB + "wsp/listaEspera/" + myState.id,
         {
-          nombre: ctx.name,
-          consulta: ctx.body,
-          telefono: ctx.from,
           tipo: "Empresa - Consulta",
+          status: "1",
+          consulta: ctx.body,
         }
       );
       await flowDynamic(
@@ -45,15 +45,15 @@ const empresaPedidoFlow = addKeyword(EVENTS.ACTION)
     "Te estoy derivando con nuestro personal de atención. 😎",
     { delay: 1000 }
   )
-  .addAction(async (ctx, { flowDynamic, blacklist }) => {
+  .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
     try {
-      const response = await axios.post(
-        process.env.URL_WEB + "wsp/listaEspera",
+      const myState = state.getMyState();
+      const response = await axios.put(
+        process.env.URL_WEB + "wsp/listaEspera/" + myState.id,
         {
-          nombre: ctx.name,
+          status: "1",
           consulta: "Pedido",
-          telefono: ctx.from,
           tipo: "Empresa - Pedido",
         }
       );

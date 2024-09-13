@@ -14,18 +14,18 @@ const welcomeFlow = addKeyword(EVENTS.WELCOME)
               process.env.URL_WEB + "wsp/listaEspera",
               {
                 nombre: ctx.name,
-                consulta: "No existe consulta",
                 telefono: ctx.from,
                 tipo: "Sin definir",
                 status: "0",
               }
             );
-        
             await state.update({id: response.data.id});
-            
+   
           } catch (error) {
             console.log(`Error al registrar en lista de espera desde welcomeFlow: ${error}`);
           }
+
+          
 
         await flowDynamic("Hola "+ ctx.name + "!! Estás hablando con CIPRES!")
     })
