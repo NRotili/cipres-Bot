@@ -13,7 +13,7 @@ const consumidorFinalConsultaFlow = addKeyword(EVENTS.ACTION)
   })
   .addAnswer("Qué consulta te interesa? 🤔", { delay: 1000 })
   .addAnswer(
-    ["1️⃣. Precios", "2️⃣. Horarios", "3️⃣. Envíos", "9️⃣. Volver"],
+    ["1️⃣. Precios", "2️⃣. Horarios", "3️⃣. Envíos", "4️⃣. Asesor" ,"9️⃣. Volver"],
     { delay: 1000, capture: true },
     async (ctx, ctxFn) => {
       const bodyText: string = ctx.body.toLowerCase();
@@ -24,6 +24,8 @@ const consumidorFinalConsultaFlow = addKeyword(EVENTS.ACTION)
         "horarios",
         "3",
         "envíos",
+        "4",
+        "asesor",
         "9",
         "volver",
       ];

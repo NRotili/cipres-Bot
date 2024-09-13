@@ -1,9 +1,45 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { consumidorFinalConsultaFlow } from "./consumidorFinal.flow";
-import { reset } from "~/utils/idle-custom";
+import { reset, stop } from "~/utils/idle-custom";
 import { finalFlow } from "./final.flow";
+import axios from "axios";
+import { config } from "dotenv";
 
-// const revendedorAromatizacionConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
+const consumidorFinalConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
+.addAction(async (ctx, { flowDynamic }) => {
+    reset(ctx, flowDynamic, 300000);
+  })
+  .addAnswer(
+    "Perfecto, esperamos tu consulta para derivarte con nuestros asesores... 🧐",
+    { capture: true, delay: 1000 }
+  )
+  .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
+    config();
+    try {
+      const myState = state.getMyState();
+      const response = await axios.put(
+        process.env.URL_WEB + "wsp/listaEspera/"+ myState.id,
+        {
+          status: "1",
+          consulta: ctx.body,
+          tipo: "Consumidor Final - Consulta",
+        }
+      );
+      await flowDynamic(
+        "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad."
+      );
+      await flowDynamic(
+        "Tu posición en la lista de espera es: *" +
+          response.data.cantEsperando +
+          "*, por favor aguarda a ser atendido. 😁"
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    stop(ctx);
+    blacklist.add(ctx.from);
+  });
+
 
 const consumidorFinalConsultaEnviosFlow = addKeyword(EVENTS.ACTION)
     .addAction(async (ctx, { flowDynamic }) => {
@@ -100,4 +136,4 @@ const consumidorFinalConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
 
 
 
-export { consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow };
+export { consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaAsesorFlow };

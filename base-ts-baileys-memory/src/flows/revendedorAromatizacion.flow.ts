@@ -73,15 +73,15 @@ const revendedorAromatizacionPedidoRecibidoFlow = addKeyword(EVENTS.DOCUMENT)
   .addAnswer("Te estoy derivando con nuestro personal de atención. 😎", {
     delay: 1000,
   })
-  .addAction(async (ctx, { flowDynamic, blacklist }) => {
+  .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
     try {
-      const response = await axios.post(
-        process.env.URL_WEB + "wsp/listaEspera",
+      const myState = state.getMyState();
+      const response = await axios.put(
+        process.env.URL_WEB + "wsp/listaEspera/"+ myState.id,
         {
-          nombre: ctx.name,
+          status: "1",
           consulta: ctx.body,
-          telefono: ctx.from,
           tipo: "Revendedor - Aromatización - Pedido",
         }
       );

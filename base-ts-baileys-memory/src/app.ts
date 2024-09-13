@@ -12,7 +12,7 @@ import { idleFlow } from './utils/idle-custom'
 import { revendedorGeneralConsultaFlow, revendedorGeneralFlow, revendedorGeneralPedidoFlow } from './flows/revendedorGeneral.flow'
 import { revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow } from './flows/revendedorGeneralConsulta.flow'
 import { consumidorFinalConsultaFlow, consumidorFinalFlow } from './flows/consumidorFinal.flow'
-import { consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow } from './flows/consumidorFinalConsulta.flow'
+import { consumidorFinalConsultaAsesorFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow } from './flows/consumidorFinalConsulta.flow'
 import { audioFlow } from './flows/audio.flow'
 import { config } from 'dotenv'
 import { finalFlow } from './flows/final.flow'
@@ -51,7 +51,7 @@ const main = async () => {
         revendedorAromatizacionConsultaHorariosFlow,
         revendedorGeneralFlow,
         revendedorGeneralPedidoFlow,
-        revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow, consumidorFinalFlow, consumidorFinalConsultaFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow,
+        revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow, consumidorFinalFlow, consumidorFinalConsultaFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaAsesorFlow,
         backFlow, idleFlow])
     
     const adapterProvider = createProvider(Provider)

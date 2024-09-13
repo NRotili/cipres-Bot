@@ -10,15 +10,15 @@ const revendedorGeneralPedidoFlow = addKeyword(EVENTS.ACTION)
     "Te estoy derivando con nuestro personal de atención. 😎",
     { delay: 1000 }
   )
-  .addAction(async (ctx, { flowDynamic, blacklist }) => {
+  .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
     try {
-      const response = await axios.post(
-        process.env.URL_WEB + "wsp/listaEspera",
+        const myState = state.getMyState();
+      const response = await axios.put(
+        process.env.URL_WEB + "wsp/listaEspera/" + myState.id,
         {
-          nombre: ctx.name,
           consulta: "Pedido",
-          telefono: ctx.from,
+          status: "1",
           tipo: "Revendedor - General - Pedido",
         }
       );
