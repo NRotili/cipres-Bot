@@ -7,7 +7,7 @@ import { backFlow } from './flows/back.flow'
 import { revendedorFlow } from './flows/revendedor.flow'
 import { revendedorAromatizacionConsultaFlow, revendedorAromatizacionFlow, revendedorAromatizacionPedidoFlow, revendedorAromatizacionPedidoRecibidoFlow } from './flows/revendedorAromatizacion.flow'
 import { revendedorAromatizacionConsultaAsesorFlow, revendedorAromatizacionConsultaHorariosFlow, revendedorAromatizacionConsultaMetodologiaFlow, revendedorAromatizacionConsultaPreciosFlow } from './flows/revendedorAromatizacionConsulta.flow'
-import { idleFlow } from './utils/idle-custom'
+import { idleFlow, stop } from './utils/idle-custom'
 import { revendedorGeneralConsultaFlow, revendedorGeneralFlow, revendedorGeneralPedidoFlow } from './flows/revendedorGeneral.flow'
 import { revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow } from './flows/revendedorGeneralConsulta.flow'
 import { consumidorFinalConsultaFlow, consumidorFinalFlow } from './flows/consumidorFinal.flow'
@@ -16,6 +16,8 @@ import { audioFlow } from './flows/audio.flow'
 import { config } from 'dotenv'
 import { finalFlow } from './flows/final.flow'
 import { mensajeFueraHorarioFlow } from './flows/fueraHorarioFlow'
+import { BotContext } from '@builderbot/bot/dist/types';
+
 config()
 
 const PORT = process.env.PORT ?? 3008
@@ -95,8 +97,12 @@ const main = async () => {
         handleCtx(async (bot, req, res) => {
             const { number, intent } = req.body
             if (intent === 'remove') bot.blacklist.remove(number)
-            if (intent === 'add') bot.blacklist.add(number)
-
+            if (intent === 'add') {
+                //create new object BotContext
+                bot.blacklist.add(number)
+                const ctx: BotContext = { from: number, body: 'blacklist' }
+                stop(ctx);
+            }
             res.writeHead(200, { 'Content-Type': 'application/json' })
             return res.end(JSON.stringify({ status: 'ok', number, intent }))
         })
