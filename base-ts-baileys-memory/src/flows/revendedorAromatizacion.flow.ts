@@ -9,9 +9,12 @@ import {
 import { reset, stop } from "~/utils/idle-custom";
 import axios from "axios";
 import { config } from "dotenv";
+import { esHorarioValido } from "~/utils/laboral";
+import { mensajeFueraHorarioFlow } from "./fueraHorarioFlow";
 
 const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
-  .addAction(async (ctx, { flowDynamic }) => {
+  .addAction(async (ctx, { flowDynamic, state }) => {
+    await state.update({tipo: "Revendedor - Aromatización"});
     reset(ctx, flowDynamic, 300000);
   })
   .addAnswer("Ok! Selecciona la opción...", { delay: 1000 })
@@ -57,7 +60,11 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaHorariosFlow);
           case "4":
           case "asesor":
-            return ctxFn.gotoFlow(revendedorAromatizacionConsultaAsesorFlow);
+            if (esHorarioValido()) {
+              return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+            } else {
+              return ctxFn.gotoFlow(revendedorAromatizacionConsultaAsesorFlow);
+            }
           case "9":
           case "volver":
             return ctxFn.gotoFlow(revendedorFlow);
@@ -78,7 +85,7 @@ const revendedorAromatizacionPedidoRecibidoFlow = addKeyword(EVENTS.DOCUMENT)
     try {
       const myState = state.getMyState();
       const response = await axios.put(
-        process.env.URL_WEB + "wsp/listaEspera/"+ myState.id,
+        process.env.URL_WEB + "wsp/listaEspera/" + myState.id,
         {
           status: "1",
           consulta: ctx.body,

@@ -1,4 +1,3 @@
-import { join } from 'path'
 import { createBot, createProvider, createFlow } from '@builderbot/bot'
 import { MemoryDB as Database } from '@builderbot/bot'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
@@ -16,6 +15,7 @@ import { consumidorFinalConsultaAsesorFlow, consumidorFinalConsultaEnviosFlow, c
 import { audioFlow } from './flows/audio.flow'
 import { config } from 'dotenv'
 import { finalFlow } from './flows/final.flow'
+import { mensajeFueraHorarioFlow } from './flows/fueraHorarioFlow'
 config()
 
 const PORT = process.env.PORT ?? 3008
@@ -52,7 +52,7 @@ const main = async () => {
         revendedorGeneralFlow,
         revendedorGeneralPedidoFlow,
         revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow, consumidorFinalFlow, consumidorFinalConsultaFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaAsesorFlow,
-        backFlow, idleFlow])
+        backFlow, idleFlow, mensajeFueraHorarioFlow])
     
     const adapterProvider = createProvider(Provider)
     const adapterDB = new Database()

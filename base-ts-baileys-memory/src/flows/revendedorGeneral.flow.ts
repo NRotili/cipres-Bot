@@ -4,6 +4,8 @@ import { revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaHorariosF
 import { reset, stop } from "~/utils/idle-custom";
 import axios from "axios";
 import { config } from "dotenv";
+import { mensajeFueraHorarioFlow } from "./fueraHorarioFlow";
+import { esHorarioValido } from "~/utils/laboral";
 
 const revendedorGeneralPedidoFlow = addKeyword(EVENTS.ACTION)
 .addAnswer(
@@ -36,7 +38,8 @@ const revendedorGeneralPedidoFlow = addKeyword(EVENTS.ACTION)
   .addAnswer("Mientras tanto, anda detallando tu pedido... 📝");
 
 const revendedorGeneralConsultaFlow = addKeyword(EVENTS.ACTION)
-    .addAction(async (ctx, { flowDynamic }) => {
+    .addAction(async (ctx, { flowDynamic, state }) => {
+        await state.update({tipo: "Revendedor - General"});
         reset(ctx, flowDynamic, 300000);
     })
     .addAnswer("Ok! Selecciona la opción...", {delay: 1000})
@@ -63,7 +66,11 @@ const revendedorGeneralConsultaFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(revendedorGeneralConsultaHorariosFlow);
                 case '4':
                 case 'asesor':
-                    return ctxFn.gotoFlow(revendedorGeneralConsultaAsesorFlow);
+                    if(esHorarioValido()) {
+                        return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+                    } else {
+                        return ctxFn.gotoFlow(revendedorGeneralConsultaAsesorFlow);
+                    }
                 case '9':
                 case 'volver':
                     return ctxFn.gotoFlow(revendedorFlow);

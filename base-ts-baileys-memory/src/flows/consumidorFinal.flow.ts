@@ -1,14 +1,18 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { backFlow } from "./back.flow";
 import {
+  consumidorFinalConsultaAsesorFlow,
   consumidorFinalConsultaEnviosFlow,
   consumidorFinalConsultaHorariosFlow,
   consumidorFinalConsultaPreciosFlow,
 } from "./consumidorFinalConsulta.flow";
 import { reset } from "~/utils/idle-custom";
+import { mensajeFueraHorarioFlow } from "./fueraHorarioFlow";
+import { esHorarioValido } from "~/utils/laboral";
 
 const consumidorFinalConsultaFlow = addKeyword(EVENTS.ACTION)
-  .addAction(async (ctx, { flowDynamic }) => {
+  .addAction(async (ctx, { flowDynamic, state }) => {
+    await state.update({ tipo: "Consumidor Final" });
     reset(ctx, flowDynamic, 300000);
   })
   .addAnswer("Qué consulta te interesa? 🤔", { delay: 1000 })
@@ -44,6 +48,13 @@ const consumidorFinalConsultaFlow = addKeyword(EVENTS.ACTION)
           case "3":
           case "envíos":
             return ctxFn.gotoFlow(consumidorFinalConsultaEnviosFlow);
+          case "4":
+          case "asesor":
+            if (esHorarioValido()) {
+              return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+            } else {
+              return ctxFn.gotoFlow(consumidorFinalConsultaAsesorFlow);
+            }
           case "9":
           case "volver":
             return ctxFn.gotoFlow(backFlow);

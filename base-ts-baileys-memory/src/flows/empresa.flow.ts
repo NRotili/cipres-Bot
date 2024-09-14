@@ -3,6 +3,8 @@ import { backFlow } from "./back.flow";
 import { reset, stop } from "~/utils/idle-custom";
 import axios from "axios";
 import { config } from "dotenv";
+import { esHorarioValido } from "~/utils/laboral";
+import { mensajeFueraHorarioFlow } from "./fueraHorarioFlow";
 config();
 
 const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
@@ -41,10 +43,9 @@ const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
   });
 
 const empresaPedidoFlow = addKeyword(EVENTS.ACTION)
-  .addAnswer(
-    "Te estoy derivando con nuestro personal de atención. 😎",
-    { delay: 1000 }
-  )
+  .addAnswer("Te estoy derivando con nuestro personal de atención. 😎", {
+    delay: 1000,
+  })
   .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
     try {
@@ -71,7 +72,8 @@ const empresaPedidoFlow = addKeyword(EVENTS.ACTION)
   .addAnswer("Mientras tanto, anda detallando tu pedido... 📝");
 
 const empresaFlow = addKeyword(EVENTS.ACTION)
-  .addAction(async (ctx, { flowDynamic }) => {
+  .addAction(async (ctx, { flowDynamic, state }) => {
+    await state.update({tipo: "Empresa"});
     reset(ctx, flowDynamic, 300000);
   })
   .addAnswer("Perfecto, qué deseas realizar?", { delay: 1000 })
@@ -96,10 +98,18 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
         switch (bodyText) {
           case "1":
           case "consulta":
-            return ctxFn.gotoFlow(empresaConsultaFlow);
+            if (esHorarioValido()) {
+              return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+            } else {
+              return ctxFn.gotoFlow(empresaConsultaFlow);
+            }
           case "2":
           case "pedido":
-            return ctxFn.gotoFlow(empresaPedidoFlow);
+            if (esHorarioValido()) {
+              return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+            } else {
+              return ctxFn.gotoFlow(empresaPedidoFlow);
+            }
           case "9":
           case "volver":
             return ctxFn.gotoFlow(backFlow);
@@ -110,4 +120,8 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
     }
   );
 
-export { empresaFlow, empresaConsultaFlow, empresaPedidoFlow };
+export {
+  empresaFlow,
+  empresaConsultaFlow,
+  empresaPedidoFlow,
+};

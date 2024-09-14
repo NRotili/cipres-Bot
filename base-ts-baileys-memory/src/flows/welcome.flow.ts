@@ -19,7 +19,7 @@ const welcomeFlow = addKeyword(EVENTS.WELCOME)
                 status: "0",
               }
             );
-            await state.update({id: response.data.id});
+            await state.update({id: response.data.id, status: "0"});
    
           } catch (error) {
             console.log(`Error al registrar en lista de espera desde welcomeFlow: ${error}`);

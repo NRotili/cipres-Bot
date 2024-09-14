@@ -7,24 +7,23 @@ config();
 const finalFlow = addKeyword(EVENTS.ACTION)
   .addAnswer(
     [
-      "Perfecto, espero haberte ayudado. 😁",
+      "Espero haberte ayudado. 😁",
       "Cualquier otra cosa que necesites, aquí estaré. 😊",
     ],
     { delay: 2000 }
   )
-  .addAction(async (ctx, {state, endFlow}) => {
+  .addAction(async (ctx, { state, endFlow }) => {
     stop(ctx);
 
-    try {
-        const myState = state.getMyState();
-      const response = await axios.get(
-        process.env.URL_WEB + "wsp/finChat/"+ myState.id
-      );
-
-    } catch (error) {
-      console.log(
-        `Error al finalizar Chat: ${error}`
-      );
+    const myState = state.getMyState();
+    if (myState.status === "0") {
+      try {
+        const response = await axios.get(
+          process.env.URL_WEB + "wsp/finChat/" + myState.id
+        );
+      } catch (error) {
+        console.log(`Error al finalizar Chat: ${error}`);
+      }
     }
 
     return endFlow("Hasta luego! 👋");
