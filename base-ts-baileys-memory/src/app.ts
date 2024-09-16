@@ -10,7 +10,7 @@ import { revendedorAromatizacionConsultaAsesorFlow, revendedorAromatizacionConsu
 import { idleFlow, stop } from './utils/idle-custom'
 import { revendedorGeneralConsultaFlow, revendedorGeneralFlow, revendedorGeneralPedidoFlow } from './flows/revendedorGeneral.flow'
 import { revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow } from './flows/revendedorGeneralConsulta.flow'
-import { consumidorFinalConsultaFlow, consumidorFinalFlow } from './flows/consumidorFinal.flow'
+import { consumidorFinalConsultaFlow, consumidorFinalFlow, consumidorFinalPedidoFlow } from './flows/consumidorFinal.flow'
 import { consumidorFinalConsultaAsesorFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow } from './flows/consumidorFinalConsulta.flow'
 import { audioFlow } from './flows/audio.flow'
 import { config } from 'dotenv'
@@ -54,7 +54,7 @@ const main = async () => {
         revendedorGeneralFlow,
         revendedorGeneralPedidoFlow,
         revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow, consumidorFinalFlow, consumidorFinalConsultaFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaAsesorFlow,
-        backFlow, idleFlow, mensajeFueraHorarioFlow])
+        backFlow, idleFlow, mensajeFueraHorarioFlow,consumidorFinalPedidoFlow])
     
     const adapterProvider = createProvider(Provider)
     const adapterDB = new Database()
