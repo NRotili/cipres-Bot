@@ -23,17 +23,15 @@ const revendedorAromatizacionConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
     { delay: 1000, capture: true },
     async (ctx, ctxFn) => {
       const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = ["1", "sí", "si", "2", "no"];
+      const keywords: string[] = ["1", "2"];
       const containsKeyword = keywords.some((keyword) =>
         bodyText.includes(keyword)
       );
       if (containsKeyword) {
         switch (bodyText) {
           case "1":
-          case "sí":
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
           case "2":
-          case "no":
             return ctxFn.gotoFlow(finalFlow);
         }
       } else {
@@ -72,7 +70,7 @@ const revendedorAromatizacionConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
     { delay: 1000, capture: true },
     async (ctx, ctxFn) => {
       const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = ["1", "sí", "si", "2", "no"];
+      const keywords: string[] = ["1","2"];
       const containsKeyword = keywords.some((keyword) =>
         bodyText.includes(keyword)
       );
@@ -80,10 +78,8 @@ const revendedorAromatizacionConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
       if (containsKeyword) {
         switch (bodyText) {
           case "1":
-          case "sí":
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
           case "2":
-          case "no":
             return ctxFn.gotoFlow(finalFlow);
         }
       } else {
@@ -111,7 +107,7 @@ const revendedorAromatizacionConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
     { delay: 1000, capture: true },
     async (ctx, ctxFn) => {
       const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = ["1", "sí", "si", "2", "no"];
+      const keywords: string[] = ["1", "2"];
       const containsKeyword = keywords.some((keyword) =>
         bodyText.includes(keyword)
       );
@@ -119,10 +115,8 @@ const revendedorAromatizacionConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
       if (containsKeyword) {
         switch (bodyText) {
           case "1":
-          case "sí":
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
           case "2":
-          case "no":
             return ctxFn.gotoFlow(finalFlow);
         }
       } else {

@@ -84,11 +84,8 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
       const bodyText: string = ctx.body.toLowerCase();
       const keywords: string[] = [
         "1",
-        "consulta",
         "2",
-        "pedido",
         "9",
-        "volver",
       ];
       const containsKeyword = keywords.some((keyword) =>
         bodyText.includes(keyword)
@@ -97,21 +94,18 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
       if (containsKeyword) {
         switch (bodyText) {
           case "1":
-          case "consulta":
             if (esHorarioValido()) {
               return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
             } else {
               return ctxFn.gotoFlow(empresaConsultaFlow);
             }
           case "2":
-          case "pedido":
             if (esHorarioValido()) {
               return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
             } else {
               return ctxFn.gotoFlow(empresaPedidoFlow);
             }
           case "9":
-          case "volver":
             return ctxFn.gotoFlow(backFlow);
         }
       } else {

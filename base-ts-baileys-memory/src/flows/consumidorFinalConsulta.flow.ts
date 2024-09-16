@@ -60,17 +60,14 @@ const consumidorFinalConsultaEnviosFlow = addKeyword(EVENTS.ACTION)
     .addAnswer(['Otra consulta? 🤔','1️⃣. Sí', '2️⃣. No'], {delay: 1000, capture: true},
     async (ctx, ctxFn) => {
         const bodyText: string = ctx.body.toLowerCase();
-        const keywords: string[] = ['1', 'sí', 'si', '2', 'no'];
+        const keywords: string[] = ['1', '2'];
         const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
 
         if (containsKeyword) {
             switch (bodyText) {
                 case '1':
-                case 'sí':
-                case 'si':
                     return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
                 case '2':
-                case 'no':
                     return ctxFn.gotoFlow(finalFlow);
             }
         } else {
@@ -87,17 +84,14 @@ const consumidorFinalConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
     .addAnswer(['Otra consulta? 🤔','1️⃣. Sí', '2️⃣. No'], {delay: 1000, capture: true},
     async (ctx, ctxFn) => {
         const bodyText: string = ctx.body.toLowerCase();
-        const keywords: string[] = ['1', 'sí', 'si', '2', 'no'];
+        const keywords: string[] = ['1', '2'];
         const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
 
         if (containsKeyword) {
             switch (bodyText) {
                 case '1':
-                case 'sí':
-                case 'si':
                     return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
                 case '2':
-                case 'no':
                     return ctxFn.gotoFlow(finalFlow);
             }
         } else {
@@ -116,17 +110,14 @@ const consumidorFinalConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
     .addAnswer(['Otra consulta? 🤔','1️⃣. Sí', '2️⃣. No'], {delay: 1000, capture: true},
     async (ctx, ctxFn) => {
         const bodyText: string = ctx.body.toLowerCase();
-        const keywords: string[] = ['1', 'sí', 'si', '2', 'no'];
+        const keywords: string[] = ['1', '2'];
         const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
 
         if (containsKeyword) {
             switch (bodyText) {
                 case '1':
-                case 'sí':
-                case 'si':
                     return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
                 case '2':
-                case 'no':
                     return ctxFn.gotoFlow(finalFlow);
             }
         } else {

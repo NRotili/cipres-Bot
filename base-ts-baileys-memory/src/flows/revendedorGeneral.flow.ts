@@ -50,29 +50,24 @@ const revendedorGeneralConsultaFlow = addKeyword(EVENTS.ACTION)
         '9️⃣. Volver'], {delay: 1000, capture: true},
     async (ctx, ctxFn) => {
         const bodyText: string = ctx.body.toLowerCase();
-        const keywords: string[] = ['1', 'metodología', '2', 'precios', '3', 'horarios', '4', 'asesor', '9', 'volver'];
+        const keywords: string[] = ["1", "2", "3", "4", "9"];
         const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
 
         if (containsKeyword) {
             switch (bodyText) {
                 case '1':
-                case 'metodología':
                     return ctxFn.gotoFlow(revendedorGeneralConsultaMetodologiaFlow);
                 case '2':
-                case 'precios':
                     return ctxFn.gotoFlow(revendedorGeneralConsultaPreciosFlow);
                 case '3':
-                case 'horarios':
                     return ctxFn.gotoFlow(revendedorGeneralConsultaHorariosFlow);
                 case '4':
-                case 'asesor':
                     if(esHorarioValido()) {
                         return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
                     } else {
                         return ctxFn.gotoFlow(revendedorGeneralConsultaAsesorFlow);
                     }
                 case '9':
-                case 'volver':
                     return ctxFn.gotoFlow(revendedorFlow);
             }
         } else {
@@ -91,19 +86,16 @@ const revendedorGeneralFlow = addKeyword(EVENTS.ACTION)
         '9️⃣. Volver'], {delay: 1000, capture: true},
     async (ctx, ctxFn) => {
         const bodyText: string = ctx.body.toLowerCase();
-        const keywords: string[] = ['1', 'consulta', '2', 'pedido', '9', 'volver'];
+        const keywords: string[] = ["1", "2", "9"];
         const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
 
         if (containsKeyword) {
             switch (bodyText) {
                 case '1':
-                case 'consulta':
                     return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
                 case '2':
-                case 'pedido':
                     return ctxFn.gotoFlow(revendedorGeneralPedidoFlow);
                 case '9':
-                case 'volver':
                     return ctxFn.gotoFlow(revendedorFlow);
             }
         } else {

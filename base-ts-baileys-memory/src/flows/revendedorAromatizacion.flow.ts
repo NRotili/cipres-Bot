@@ -31,15 +31,10 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
       const bodyText: string = ctx.body.toLowerCase();
       const keywords: string[] = [
         "1",
-        "metodología",
         "2",
-        "precios",
         "3",
-        "horarios",
         "4",
-        "asesor",
         "9",
-        "volver",
       ];
       const containsKeyword = keywords.some((keyword) =>
         bodyText.includes(keyword)
@@ -48,25 +43,20 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
       if (containsKeyword) {
         switch (bodyText) {
           case "1":
-          case "metodología":
             return ctxFn.gotoFlow(
               revendedorAromatizacionConsultaMetodologiaFlow
             );
           case "2":
-          case "precios":
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaPreciosFlow);
           case "3":
-          case "horarios":
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaHorariosFlow);
           case "4":
-          case "asesor":
             if (esHorarioValido()) {
               return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
             } else {
               return ctxFn.gotoFlow(revendedorAromatizacionConsultaAsesorFlow);
             }
           case "9":
-          case "volver":
             return ctxFn.gotoFlow(revendedorFlow);
         }
       } else {
@@ -145,11 +135,8 @@ const revendedorAromatizacionFlow = addKeyword(EVENTS.ACTION)
       const bodyText: string = ctx.body.toLowerCase();
       const keywords: string[] = [
         "1",
-        "consulta",
         "2",
-        "pedido",
         "9",
-        "volver",
       ];
       const containsKeyword = keywords.some((keyword) =>
         bodyText.includes(keyword)
@@ -158,13 +145,10 @@ const revendedorAromatizacionFlow = addKeyword(EVENTS.ACTION)
       if (containsKeyword) {
         switch (bodyText) {
           case "1":
-          case "consulta":
             return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
           case "2":
-          case "pedido":
             return ctxFn.gotoFlow(revendedorAromatizacionPedidoFlow);
           case "9":
-          case "volver":
             return ctxFn.gotoFlow(revendedorFlow);
         }
       } else {
