@@ -94,7 +94,11 @@ const revendedorGeneralFlow = addKeyword(EVENTS.ACTION)
                 case '1':
                     return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
                 case '2':
+                    if(esHorarioValido()) {
+                        return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+                    } else {
                     return ctxFn.gotoFlow(revendedorGeneralPedidoFlow);
+                    }
                 case '9':
                     return ctxFn.gotoFlow(revendedorFlow);
             }
