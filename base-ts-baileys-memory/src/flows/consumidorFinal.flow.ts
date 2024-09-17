@@ -70,7 +70,7 @@ const consumidorFinalPedidoFlow = addKeyword(EVENTS.ACTION)
         {
           status: "1",
           consulta: "Pedido",
-          tipo: "Empresa - Pedido",
+          tipo: "Consumidor final - Pedido",
         }
       );
       await flowDynamic(
@@ -124,4 +124,4 @@ const consumidorFinalFlow = addKeyword(EVENTS.ACTION)
     }
   );
 
-export { consumidorFinalFlow, consumidorFinalConsultaFlow };
+export { consumidorFinalFlow, consumidorFinalConsultaFlow, consumidorFinalPedidoFlow };

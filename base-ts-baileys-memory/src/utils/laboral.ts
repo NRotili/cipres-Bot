@@ -13,10 +13,10 @@ function esHorarioValido() {
     return (
       dia === 0 || // Es domingo
       (dia === 6 &&
-        (hora < HORA_INICIO_FIN_SEMANA || hora > HORA_FIN_FIN_SEMANA)) || // Es sábado y la hora es antes o después
+        (hora < HORA_INICIO_FIN_SEMANA || hora >= HORA_FIN_FIN_SEMANA)) || // Es sábado y la hora es antes o después
       (dia >= 1 &&
         dia <= 5 &&
-        (hora < HORA_INICIO_SEMANA || hora > HORA_FIN_SEMANA)) // Es día de semana y la hora es antes o después del horario
+        (hora < HORA_INICIO_SEMANA || hora >= HORA_FIN_SEMANA)) // Es día de semana y la hora es antes o después del horario
     );
 }
 
