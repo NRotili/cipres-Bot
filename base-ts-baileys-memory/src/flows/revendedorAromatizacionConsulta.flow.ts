@@ -135,6 +135,8 @@ const revendedorAromatizacionConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
   )
   .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
+    blacklist.add(ctx.from);
+    stop(ctx);
     try {
       const myState = state.getMyState();
       const response = await axios.put(
@@ -154,10 +156,9 @@ const revendedorAromatizacionConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
           "*, por favor aguarda a ser atendido. 😁"
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error al cargar consulta desde Rev Ar: "+error);
     }
-    stop(ctx);
-    blacklist.add(ctx.from);
+   
   });
 
 export {

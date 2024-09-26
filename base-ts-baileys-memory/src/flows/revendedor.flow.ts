@@ -1,6 +1,6 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { backFlow } from "./back.flow";
-import { revendedorAromatizacionFlow } from "./revendedorAromatizacion.flow";
+import { revendedorAromatizacionConsultaFlow, revendedorAromatizacionFlow } from "./revendedorAromatizacion.flow";
 import { revendedorGeneralFlow } from "./revendedorGeneral.flow";
 import { reset } from "~/utils/idle-custom";
 
@@ -21,7 +21,7 @@ const revendedorFlow = addKeyword(EVENTS.ACTION)
         if (containsKeyword) {
             switch (bodyText) {
                 case '1':
-                    return ctxFn.gotoFlow(revendedorAromatizacionFlow);
+                    return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
                 case '2':
                     return ctxFn.gotoFlow(revendedorGeneralFlow);
                 case '9':

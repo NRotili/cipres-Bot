@@ -13,9 +13,7 @@ const idleFlow = addKeyword(EVENTS.ACTION).addAction(
 
 // Function to start the inactivity timer for a user
 const start = (ctx: BotContext, flowDynamic, ms: number) => {
-    console.log(`start countdown for the user: ${ctx.from}`);
     timers[ctx.from] = setTimeout( async () => {
-        console.log(`User timeout: ${ctx.from}, ${ms}ms, `);
         await flowDynamic("Hola? Estás ahí? Parece que te has ido 😢");
     }, ms);
 }
@@ -24,7 +22,6 @@ const start = (ctx: BotContext, flowDynamic, ms: number) => {
 const reset = (ctx: BotContext, flowDynamic, ms: number) => {
     stop(ctx);
     if (timers[ctx.from]) {
-        console.log(`reset countdown for the user: ${ctx.from}`);
         clearTimeout(timers[ctx.from]);
     }
     start(ctx, flowDynamic, ms);
@@ -33,7 +30,6 @@ const reset = (ctx: BotContext, flowDynamic, ms: number) => {
 // Function to stop the inactivity timer for a user
 const stop = (ctx: BotContext) => {
     if (timers[ctx.from]) {
-        console.log(`stop countdown for the user: ${ctx.from}`);
         clearTimeout(timers[ctx.from]);
     }
 }

@@ -17,6 +17,8 @@ const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
   )
   .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
+    blacklist.add(ctx.from);
+    stop(ctx);
     try {
       const myState = state.getMyState();
       const response = await axios.put(
@@ -36,10 +38,8 @@ const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
           "*, por favor aguarda a ser atendido. 😁"
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error al cargar consulta desde empresa: "+error);
     }
-    stop(ctx);
-    blacklist.add(ctx.from);
   });
 
 const empresaPedidoFlow = addKeyword(EVENTS.ACTION)
@@ -47,6 +47,8 @@ const empresaPedidoFlow = addKeyword(EVENTS.ACTION)
     delay: 1000,
   })
   .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
+    blacklist.add(ctx.from);
+    stop(ctx);
     config();
     try {
       const myState = state.getMyState();
@@ -64,10 +66,8 @@ const empresaPedidoFlow = addKeyword(EVENTS.ACTION)
           "*, por favor aguarda a ser atendido. 😁"
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error al cargar pedido desde empresa: "+error);
     }
-    stop(ctx);
-    blacklist.add(ctx.from);
   })
   .addAnswer("Mientras tanto, anda detallando tu pedido... 📝");
 

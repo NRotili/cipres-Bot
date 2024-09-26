@@ -1,10 +1,12 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { empresaFlow } from "./empresa.flow";
 import { revendedorFlow } from "./revendedor.flow";
-import { consumidorFinalFlow } from "./consumidorFinal.flow";
+import { consumidorFinalConsultaFlow, consumidorFinalFlow } from "./consumidorFinal.flow";
 import { start } from "~/utils/idle-custom";
 import axios from "axios";
 import { config } from "dotenv";
+import { revendedorAromatizacionConsultaFlow, revendedorAromatizacionFlow } from "./revendedorAromatizacion.flow";
+import { revendedorGeneralConsultaFlow, revendedorGeneralFlow } from "./revendedorGeneral.flow";
 config();
 
 const welcomeFlow = addKeyword(EVENTS.WELCOME)
@@ -24,9 +26,6 @@ const welcomeFlow = addKeyword(EVENTS.WELCOME)
           } catch (error) {
             console.log(`Error al registrar en lista de espera desde welcomeFlow: ${error}`);
           }
-
-          
-
         await flowDynamic("Hola "+ ctx.name + "!! Estás hablando con CIPRES!")
     })
     .addAnswer("Espero estés muy bien! 😀", {delay: 2000})
@@ -36,11 +35,12 @@ const welcomeFlow = addKeyword(EVENTS.WELCOME)
         start(ctx, flowDynamic, 300000)
     })
     .addAnswer(['1️⃣. Empresa/Institución/Club',
-        '2️⃣. Revendedor',
-        '3️⃣. Consumidor Final'], {capture: true}, 
+        '2️⃣. Revendedor Aromatización',
+        '3️⃣. Revendedor General',
+        '4️⃣. Consumidor Final'], {capture: true}, 
     async (ctx, ctxFn) => {
         const bodyText: string = ctx.body.toLowerCase();
-        const keywords: string[] = ["1", "2", "3"];
+        const keywords: string[] = ["1", "2", "3", "4"];
         const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
         if (containsKeyword) {
 
@@ -48,9 +48,11 @@ const welcomeFlow = addKeyword(EVENTS.WELCOME)
                 case '1':
                     return ctxFn.gotoFlow(empresaFlow);
                 case '2':
-                    return ctxFn.gotoFlow(revendedorFlow);
+                    return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
                 case '3':
-                    return ctxFn.gotoFlow(consumidorFinalFlow);
+                    return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
+                case '4':
+                    return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
             }
         } else {
             return ctxFn.fallBack("Ups, parece que tu respuesta no está entre mis opciones 😅");

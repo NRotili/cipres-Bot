@@ -15,6 +15,8 @@ const revendedorGeneralConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
   )
   .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
+    blacklist.add(ctx.from);
+    stop(ctx);
     try {
       const myState = state.getMyState();
 
@@ -35,10 +37,9 @@ const revendedorGeneralConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
           "*, por favor aguarda a ser atendido. 😁"
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error al cargar consulta Rev Gen: "+error);
     }
-    stop(ctx);
-    blacklist.add(ctx.from);
+
   });
 
 const revendedorGeneralConsultaHorariosFlow = addKeyword(EVENTS.ACTION)

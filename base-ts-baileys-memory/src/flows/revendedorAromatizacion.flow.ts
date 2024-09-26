@@ -11,10 +11,11 @@ import axios from "axios";
 import { config } from "dotenv";
 import { esHorarioValido } from "~/utils/laboral";
 import { mensajeFueraHorarioFlow } from "./fueraHorarioFlow";
+import { backFlow } from "./back.flow";
 
 const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic, state }) => {
-    await state.update({tipo: "Revendedor - Aromatización"});
+    await state.update({ tipo: "Revendedor - Aromatización" });
     reset(ctx, flowDynamic, 300000);
   })
   .addAnswer("Ok! Selecciona la opción...", { delay: 1000 })
@@ -24,6 +25,7 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
       "2️⃣. Precios",
       "3️⃣. Horarios",
       "4️⃣. Asesor",
+      "5️⃣. Pedido",
       "9️⃣. Volver",
     ],
     { delay: 1000, capture: true },
@@ -56,8 +58,14 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
             } else {
               return ctxFn.gotoFlow(revendedorAromatizacionConsultaAsesorFlow);
             }
+          case "5":
+            if (esHorarioValido()) {
+              return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+            } else {
+              return ctxFn.gotoFlow(revendedorAromatizacionPedidoFlow);
+            }
           case "9":
-            return ctxFn.gotoFlow(revendedorFlow);
+            return ctxFn.gotoFlow(backFlow);
         }
       } else {
         return ctxFn.fallBack("Debes seleccionar una opción válida");
@@ -66,12 +74,9 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
   );
 
 const revendedorAromatizacionPedidoRecibidoFlow = addKeyword(EVENTS.DOCUMENT)
-  .addAnswer("¡Gracias por tu pedido! 🤗", { delay: 1000 })
-  .addAnswer("Te estoy derivando con nuestro personal de atención. 😎", {
-    delay: 1000,
-  })
   .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
     config();
+   
     try {
       const myState = state.getMyState();
       const response = await axios.put(
@@ -84,19 +89,24 @@ const revendedorAromatizacionPedidoRecibidoFlow = addKeyword(EVENTS.DOCUMENT)
       );
       await flowDynamic(
         "Tu posición en la lista de espera es: *" +
-          response.data.cantEsperando +
-          "*, por favor aguarda a ser atendido. 😁"
+        response.data.cantEsperando +
+        "*, por favor aguarda a ser atendido. 😁"
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error al recibir pedido desde Rev Ar: "+error);
     }
-    stop(ctx);
-    blacklist.add(ctx.from);
+    
+  })
+  .addAnswer("¡Gracias por tu pedido! 🤗", { delay: 1000 })
+  .addAnswer("Te estoy derivando con nuestro personal de atención. 😎", {
+    delay: 1000,
   });
 
+
 const revendedorAromatizacionPedidoFlow = addKeyword(EVENTS.ACTION)
-  .addAction(async (ctx, { flowDynamic }) => {
+  .addAction(async (ctx, { blacklist }) => {
     stop(ctx);
+    blacklist.add(ctx.from);
   })
   .addAnswer(
     "Te vamos a enviar un excel para que lo completes con tus datos y el pedido. 💪🏽",

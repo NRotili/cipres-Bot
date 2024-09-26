@@ -17,9 +17,14 @@ const consumidorFinalConsultaFlow = addKeyword(EVENTS.ACTION)
     await state.update({ tipo: "Consumidor Final" });
     reset(ctx, flowDynamic, 300000);
   })
-  .addAnswer("Qué consulta te interesa? 🤔", { delay: 1000 })
+  .addAnswer("Qué opción te interesa? 🤔", { delay: 1000 })
   .addAnswer(
-    ["1️⃣. Precios", "2️⃣. Horarios", "3️⃣. Envíos", "4️⃣. Asesor", "9️⃣. Volver"],
+    ["1️⃣. Precios", 
+      "2️⃣. Horarios", 
+      "3️⃣. Envíos", 
+      "4️⃣. Asesor", 
+      "5️⃣. Pedido",
+      "9️⃣. Volver"],
     { delay: 1000, capture: true },
     async (ctx, ctxFn) => {
       const bodyText: string = ctx.body.toLowerCase();
@@ -28,6 +33,7 @@ const consumidorFinalConsultaFlow = addKeyword(EVENTS.ACTION)
         "2",
         "3",
         "4",
+        "5",
         "9",
       ];
       const containsKeyword = keywords.some((keyword) =>
@@ -48,11 +54,17 @@ const consumidorFinalConsultaFlow = addKeyword(EVENTS.ACTION)
             } else {
               return ctxFn.gotoFlow(consumidorFinalConsultaAsesorFlow);
             }
+          case "5":
+            if (esHorarioValido()) {
+              return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+            } else {
+              return ctxFn.gotoFlow(consumidorFinalPedidoFlow);
+            }
           case "9":
             return ctxFn.gotoFlow(backFlow);
         }
       } else {
-        return ctxFn.fallBack("Debes seleccionar una opción válida");
+        return ctxFn.fallBack("Debes seleccionar una opción válida 🤓");
       }
     }
   );
@@ -62,6 +74,8 @@ const consumidorFinalPedidoFlow = addKeyword(EVENTS.ACTION)
     delay: 1000,
   })
   .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
+    blacklist.add(ctx.from);
+    stop(ctx);
     config();
     try {
       const myState = state.getMyState();
@@ -79,10 +93,9 @@ const consumidorFinalPedidoFlow = addKeyword(EVENTS.ACTION)
         "*, por favor aguarda a ser atendido. 😁"
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error al derivar pedido desde CF: "+error);
     }
-    stop(ctx);
-    blacklist.add(ctx.from);
+    
   })
   .addAnswer("Mientras tanto, anda detallando tu pedido... 📝");
 

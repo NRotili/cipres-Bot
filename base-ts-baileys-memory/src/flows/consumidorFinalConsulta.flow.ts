@@ -14,6 +14,8 @@ const consumidorFinalConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
     { capture: true, delay: 1000 }
   )
   .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
+    blacklist.add(ctx.from);
+    stop(ctx);
     config();
     try {
       const myState = state.getMyState();
@@ -34,10 +36,9 @@ const consumidorFinalConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
           "*, por favor aguarda a ser atendido. 😁"
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error al cargar consulta desde CF: "+error);
     }
-    stop(ctx);
-    blacklist.add(ctx.from);
+  
   });
 
 

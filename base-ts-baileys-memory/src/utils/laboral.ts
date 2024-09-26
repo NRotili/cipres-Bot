@@ -2,7 +2,6 @@ function esHorarioValido() {
     const fecha = new Date();
     const dia = fecha.getDay();
     const hora = fecha.getHours();
-    console.log(`Dia: ${dia}, Hora: ${hora}`);
 
     // Aseguramos que las variables de entorno sean números válidos
     const HORA_INICIO_FIN_SEMANA = parseInt(process.env.HORA_INICIO_FIN_SEMANA) || 0;
