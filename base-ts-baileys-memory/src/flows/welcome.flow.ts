@@ -1,16 +1,20 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { empresaFlow } from "./empresa.flow";
-import { revendedorFlow } from "./revendedor.flow";
-import { consumidorFinalConsultaFlow, consumidorFinalFlow } from "./consumidorFinal.flow";
+import { consumidorFinalConsultaFlow} from "./consumidorFinal.flow";
 import { start } from "~/utils/idle-custom";
 import axios from "axios";
 import { config } from "dotenv";
-import { revendedorAromatizacionConsultaFlow, revendedorAromatizacionFlow } from "./revendedorAromatizacion.flow";
-import { revendedorGeneralConsultaFlow, revendedorGeneralFlow } from "./revendedorGeneral.flow";
+import { revendedorAromatizacionConsultaFlow} from "./revendedorAromatizacion.flow";
+import { revendedorGeneralConsultaFlow } from "./revendedorGeneral.flow";
+import { waitT } from "~/utils/presenceUpdate";
 config();
 
 const welcomeFlow = addKeyword(EVENTS.WELCOME)
-    .addAction(async (ctx, {state, flowDynamic}) => {
+.addAction(async (ctx, {provider, state, flowDynamic}) => {
+        start(ctx, flowDynamic, 300000)
+
+        await flowDynamic("Hola "+ ctx.name + "!! Estás hablando con CIPRES!")
+        await provider.vendor.sendPresenceUpdate('available', ctx.key.remoteJid)
         try {
             const response = await axios.post(
               process.env.URL_WEB + "wsp/listaEspera",
@@ -26,14 +30,9 @@ const welcomeFlow = addKeyword(EVENTS.WELCOME)
           } catch (error) {
             console.log(`Error al registrar en lista de espera desde welcomeFlow: ${error}`);
           }
-        await flowDynamic("Hola "+ ctx.name + "!! Estás hablando con CIPRES!")
     })
     .addAnswer("Espero estés muy bien! 😀", {delay: 2000})
     .addAnswer("Qué tipo de cliente eres? Por favor responde con el número de la opción! 🙏", {delay:500})
-    .addAction(async (ctx, { flowDynamic }) => {
-        //Revisar estas acciones
-        start(ctx, flowDynamic, 300000)
-    })
     .addAnswer(['1️⃣. Empresa/Institución/Club',
         '2️⃣. Revendedor Aromatización',
         '3️⃣. Revendedor General',
@@ -55,7 +54,7 @@ const welcomeFlow = addKeyword(EVENTS.WELCOME)
                     return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
             }
         } else {
-            return ctxFn.fallBack("Ups, parece que tu respuesta no está entre mis opciones 😅");
+            return ctxFn.fallBack("Ups, parece que tu respuesta no está entre mis opciones 😅.\n\n1️⃣. Empresa/Institución/Club\n2️⃣. Revendedor Aromatización\n3️⃣. Revendedor General\n4️⃣. Consumidor Final");
         }
     });
 

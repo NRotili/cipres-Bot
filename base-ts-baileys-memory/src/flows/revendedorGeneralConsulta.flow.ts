@@ -47,63 +47,63 @@ const revendedorGeneralConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
 const revendedorGeneralConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {
     reset(ctx, flowDynamic, 300000);
-  })
-  .addAnswer(
-    ["🕥 Lunes a Viernes de 8hs a 18hs", "🕥 Sábados de 8:30hs a 13hs."],
-    { delay: 1000 }
-  )
-  .addAnswer([
-    "IMPORTANTE ⚠️",
-    "Compras de mayoristas y revendedores únicamente podrán ser efectuadas de Lunes a Viernes. Sin excepción.",
-    "Te esperamos en 📍 Urquiza 721, Villa Constitución",
-  ])
-  .addAnswer(
-    ["Otra consulta? 🤔", "1️⃣. Sí", "2️⃣. No"],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = ["1", "2"];
-      const containsKeyword = keywords.some((keyword) =>
-        bodyText.includes(keyword)
-      );
 
-      if (containsKeyword) {
-        switch (bodyText) {
-          case "1":
-            return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
-          case "2":
-            return ctxFn.gotoFlow(finalFlow);
-        }
-      } else {
-        return ctxFn.fallBack("Tienes que seleccionar una de las opciones");
+    await flowDynamic([{
+      body: "Nuestros horarios son: \n\n🕥 Lunes a Viernes de 8hs a 18hs\n🕥 Sábados de 8:30hs a 13hs.",
+      delay: 2000
+    }]);
+
+    await flowDynamic([{
+      body: "IMPORTANTE ⚠️\nCompras de mayoristas y revendedores únicamente podrán ser efectuadas de Lunes a Viernes. Sin excepción.\nTe esperamos en 📍 Urquiza 721, Villa Constitución",
+      delay: 2000
+    }]);
+
+    await flowDynamic([{
+      body: "Otra consulta? 🤔 \n\n1️⃣. Sí\n2️⃣. No",
+      delay: 1000
+    }]);
+  })
+  .addAction({ capture: true }, async (ctx, ctxFn) => {
+    const bodyText: string = ctx.body.toLowerCase();
+    const keywords: string[] = ["1", "2"];
+    const containsKeyword = keywords.some((keyword) =>
+      bodyText.includes(keyword)
+    );
+
+    if (containsKeyword) {
+      switch (bodyText) {
+        case "1":
+          return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
+        case "2":
+          return ctxFn.gotoFlow(finalFlow);
       }
+    } else {
+      return ctxFn.fallBack("Tienes que seleccionar una de las opciones");
     }
-  );
+  });
 
 const revendedorGeneralConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {
     reset(ctx, flowDynamic, 300000);
+
+    await flowDynamic([{
+      body:"Nuestra metodología es la siguiente: ",
+      delay: 1000
+    }]);
+
+    await flowDynamic([{
+      body: "🛍️ *Compra inicial* de *$70.000*, para apertura de cuenta\n💰 *Forma de pago*: Efectivo | Transferencia con un 5% de recargo.\n🕥 *Las compras se realizan*: de Lunes a Viernes de 8 hs a 18 hs. (no se atienden revendedores los días sábados).\n📦 *Realizamos envíos*: días y horarios a coordinar.\n\nVALOR DE ENVÍO\n📍Villa Constitucion: compras mayores a $70.000 envío SIN CARGO | compras menores envío $1500\n📍Empalme/Pavón: compras mayores a $80.000 envío SIN CARGO | compras menores envío $2500\n📍San Nicolás/Arroyo: compras mayores a $100.000 envío SIN CARGO | compras menores envío $5000\n📋 Asesoramiento y cotizaciones: de Lunes a Viernes de 8 hs. a 18 hs. en 📍 Urquiza 721, Villa Constitución.",
+      delay: 6000
+    }]);
+
+    await flowDynamic([{
+      body: "Otra consulta? 🤔\n\n1️⃣. Sí\n2️⃣. No",
+      delay: 1000
+    }]);
+
   })
-  .addAnswer(
-    [
-      "🛍️ *Compra inicial* de *$70.000*, para apertura de cuenta ",
-      "💰 *Forma de pago*: Efectivo | Transferencia con un 5% de recargo.",
-      "🕥 *Las compras se realizan*: de Lunes a Viernes de 8 hs a 18 hs. (no se atienden revendedores los días sábados).",
-      "📦 *Realizamos envíos*: días y horarios a coordinar.",
-      " ",
-      "VALOR DE ENVÍO",
-      "📍Villa Constitucion: compras mayores a $70.000 envío SIN CARGO | compras menores envío $1500",
-      "📍Empalme/Pavón: compras mayores a $80.000 envío SIN CARGO | compras menores envío $2500",
-      "📍San Nicolás/Arroyo: compras mayores a $100.000 envío SIN CARGO | compras menores envío $5000",
-      "📋 Asesoramiento y cotizaciones: de Lunes a Viernes de 8 hs. a 18 hs. en 📍 Urquiza 721, Villa Constitución.",
-    ],
-    { delay: 1000 }
-  )
-  .addAnswer(
-    ["Otra consulta? 🤔", "1️⃣. Sí", "2️⃣. No"],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
+  .addAction({ capture: true }, async (ctx, ctxFn) => {
+    const bodyText: string = ctx.body.toLowerCase();
       const keywords: string[] = ["1", "2"];
       const containsKeyword = keywords.some((keyword) =>
         bodyText.includes(keyword)
@@ -121,43 +121,45 @@ const revendedorGeneralConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
           "Tienes que seleccionar una de las opciones disponibles 😁"
         );
       }
-    }
-  );
+  });
 
 const revendedorGeneralConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {
     reset(ctx, flowDynamic, 300000);
-  })
-  .addAnswer(
-    "Te comparto el enlace para que accedas a nuestro catálogo exclusivo para revendedores generales! 😉",
-    { delay: 1000 }
-  )
-  .addAnswer(
-    "https://catalogos.cipresdigital.com.ar/catalogo/revendedor/Reventa",
-    { delay: 1000 }
-  )
-  .addAnswer(
-    ["Otra consulta?", "1️⃣. Sí", "2️⃣. No"],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = ["1", "2"];
-      const containsKeyword = keywords.some((keyword) =>
-        bodyText.includes(keyword)
-      );
 
-      if (containsKeyword) {
-        switch (bodyText) {
-          case "1":
-            return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
-          case "2":
-            return ctxFn.gotoFlow(finalFlow);
-        }
-      } else {
-        return ctxFn.fallBack("Tienes que seleccionar una de las opciones");
+    await flowDynamic([{
+      body: "Te comparto el enlace para que accedas a nuestro catálogo exclusivo para revendedores generales! 😉",
+      delay:2000
+    }])
+
+    await flowDynamic([{
+      body: "https://catalogos.cipresdigital.com.ar/catalogo/revendedor/Reventa",
+      delay: 1000
+    }])
+
+    await flowDynamic([{
+      body: "Otra consulta? 🤔\n\n1️⃣. Sí\n2️⃣. No",
+      delay: 2000
+    }]);
+  })
+  .addAction({ capture: true }, async (ctx, ctxFn) => {
+    const bodyText: string = ctx.body.toLowerCase();
+    const keywords: string[] = ["1", "2"];
+    const containsKeyword = keywords.some((keyword) =>
+      bodyText.includes(keyword)
+    );
+
+    if (containsKeyword) {
+      switch (bodyText) {
+        case "1":
+          return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
+        case "2":
+          return ctxFn.gotoFlow(finalFlow);
       }
+    } else {
+      return ctxFn.fallBack("Tienes que seleccionar una de las opciones");
     }
-  );
+  });
 
 export {
   revendedorGeneralConsultaMetodologiaFlow,

@@ -5,14 +5,7 @@ import { config } from "dotenv";
 config();
 
 const finalFlow = addKeyword(EVENTS.ACTION)
-  .addAnswer(
-    [
-      "",
-      "",
-    ],
-    { delay: 2000 }
-  )
-  .addAction(async (ctx, { state, endFlow, flowDynamic }) => {
+  .addAction(async (ctx, { state, flowDynamic }) => {
     stop(ctx);
 
     const myState = state.getMyState();
@@ -25,7 +18,6 @@ const finalFlow = addKeyword(EVENTS.ACTION)
         console.log(`Error al finalizar Chat: ${error}`);
       }
     }
-
     await flowDynamic([{
       body: "Espero haberte ayudado. 😁\nCualquier otra cosa que necesites, aquí estaré. 😊",
       delay: 3000,
@@ -34,7 +26,10 @@ const finalFlow = addKeyword(EVENTS.ACTION)
       body: "¡Hasta la próxima! 👋",
       delay: 3000,
     }]);
+  })
+  .addAction(async (ctx, { endFlow }) => {
     return endFlow();
   });
+
 
 export { finalFlow };

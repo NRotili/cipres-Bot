@@ -11,25 +11,25 @@ import { config } from "dotenv";
 import { esHorarioValido } from "~/utils/laboral";
 import { mensajeFueraHorarioFlow } from "./fueraHorarioFlow";
 import { backFlow } from "./back.flow";
+import { formatWithOptions } from "util";
 
 const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic, state }) => {
     await state.update({ tipo: "Revendedor - Aromatización" });
     reset(ctx, flowDynamic, 300000);
+
+    await flowDynamic([{
+      body: "Ok! Selecciona la opción...",
+      delay: 500
+    }]);
+
+    await flowDynamic([{
+      body: "1️⃣. Metodología\n2️⃣. Precios\n3️⃣. Horarios\n4️⃣. Asesor\n5️⃣. Pedido\n9️⃣. Volver",
+      delay: 3000
+    }]);
   })
-  .addAnswer("Ok! Selecciona la opción...", { delay: 1000 })
-  .addAnswer(
-    [
-      "1️⃣. Metodología",
-      "2️⃣. Precios",
-      "3️⃣. Horarios",
-      "4️⃣. Asesor",
-      "5️⃣. Pedido",
-      "9️⃣. Volver",
-    ],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
+  .addAction({ capture: true }, async (ctx, ctxFn) => {
+    const bodyText: string = ctx.body.toLowerCase();
       const keywords: string[] = [
         "1",
         "2",
@@ -68,15 +68,13 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(backFlow);
         }
       } else {
-        return ctxFn.fallBack("Debes seleccionar una opción válida.\n1️⃣. Metodología\n2️⃣. Precios\n3️⃣. Horarios\n4️⃣. Asesor\n5️⃣. Pedido\n9️⃣. Volver");
+        return ctxFn.fallBack("Debes seleccionar una opción válida.\n\n1️⃣. Metodología\n2️⃣. Precios\n3️⃣. Horarios\n4️⃣. Asesor\n5️⃣. Pedido\n9️⃣. Volver");
       }
-    }
-  );
+  });
 
 const revendedorAromatizacionPedidoRecibidoFlow = addKeyword(EVENTS.DOCUMENT)
-  .addAction(async (ctx, { flowDynamic, blacklist, state }) => {
+  .addAction(async (ctx, { flowDynamic, state }) => {
     config();
-   
     try {
       const myState = state.getMyState();
       const response = await axios.put(
@@ -90,7 +88,7 @@ const revendedorAromatizacionPedidoRecibidoFlow = addKeyword(EVENTS.DOCUMENT)
 
       await flowDynamic([{
         body: "Gracias por tu pedido! 🤗 \nTe estoy derivando con nuestro personal de atención. 😎",
-        delay: 2000
+        delay: 3000
       }]);
       await flowDynamic([{
         body: "Tu posición en la lista de espera es: *" + response.data.cantEsperando + "*, por favor aguarda a ser atendido. 😁",
@@ -104,26 +102,22 @@ const revendedorAromatizacionPedidoRecibidoFlow = addKeyword(EVENTS.DOCUMENT)
   });
 
 const revendedorAromatizacionPedidoFlow = addKeyword(EVENTS.ACTION)
-  .addAction(async (ctx, { blacklist }) => {
+  .addAction(async (ctx, { blacklist, flowDynamic }) => {
     stop(ctx);
     blacklist.add(ctx.from);
+
+    await flowDynamic([{
+      body: "Te vamos a enviar un excel para que lo completes con tus datos y el pedido. 💪🏽\n\nPor favor, envíanos el archivo completado y sin modificar el formato para procesar tu pedido. 🙏",
+      delay:3000,
+      media: "https://catalogos.cipresdigital.com.ar/doc/PEDIDOS%20%20(NO%20cambiar%20el%20formato%20EXCEL).xls"
+    }]);
+
+    await flowDynamic([{
+      body: "Una vez que lo tengas listo, envialo por acá así te derivamos con nuestro personal. 😉",
+      delay: 2000
+    }]);
   })
-  .addAnswer(
-    "Te vamos a enviar un excel para que lo completes con tus datos y el pedido. 💪🏽\nPor favor, envíanos el archivo completado y sin modificar el formato para procesar tu pedido. 🙏",
-    {
-      delay: 1000,
-      media:
-        "https://catalogos.cipresdigital.com.ar/doc/PEDIDOS%20%20(NO%20cambiar%20el%20formato%20EXCEL).xls",
-    }
-  )
-  .addAnswer(
-    "Quedamos a la espera del archivo para derivarte con nuestro personal. 😊",
-    {
-      delay: 2000,
-      capture: true,
-    }
-  )
-  .addAction(async (ctx, ctxFn) => {
+  .addAction({capture:true},async (ctx, ctxFn) => {
     return ctxFn.gotoFlow(revendedorAromatizacionPedidoRecibidoFlow);
   });
 

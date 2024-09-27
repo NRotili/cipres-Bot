@@ -8,39 +8,41 @@ import { finalFlow } from "./final.flow";
 const revendedorAromatizacionConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {
     reset(ctx, flowDynamic, 300000);
+
+    await flowDynamic([{
+      body: "Nuestros horarios de atención son:\n\n🕥 Lunes a Viernes de 8hs a 18hs \n🕥 Sábados de 8:30hs a 13hs.",
+      delay: 2000
+    }]);
+
+    await flowDynamic([{
+      body: "IMPORTANTE ⚠️\n\nCompras de mayoristas y revendedores únicamente podrán ser efectuadas de Lunes a Viernes. Sin excepción.\n\nTe esperamos en 📍 Urquiza 721, Villa Constitución",
+      delay: 4000
+    }]);
+
+    await flowDynamic([{
+      body: "Otra consulta? 🤔\n\n1️⃣. Sí\n2️⃣. No",
+      delay: 2000
+    }]);
   })
-  .addAnswer(
-    ["🕥 Lunes a Viernes de 8hs a 18hs", "🕥 Sábados de 8:30hs a 13hs."],
-    { delay: 1000 }
-  )
-  .addAnswer([
-    "IMPORTANTE ⚠️",
-    "Compras de mayoristas y revendedores únicamente podrán ser efectuadas de Lunes a Viernes. Sin excepción.",
-    "Te esperamos en 📍 Urquiza 721, Villa Constitución",
-  ])
-  .addAnswer(
-    ["Otra consulta? 🤔", "1️⃣. Sí", "2️⃣. No"],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = ["1", "2"];
-      const containsKeyword = keywords.some((keyword) =>
-        bodyText.includes(keyword)
-      );
-      if (containsKeyword) {
-        switch (bodyText) {
-          case "1":
-            return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
-          case "2":
-            return ctxFn.gotoFlow(finalFlow);
-        }
-      } else {
-        return ctxFn.fallBack(
-          "Tienes que seleccionar una de las opciones disponibles 😁.\n1️⃣. Sí\n2️⃣. No"
-        );
+  .addAction({ capture: true }, async (ctx, ctxFn) => {
+    const bodyText: string = ctx.body.toLowerCase();
+    const keywords: string[] = ["1", "2"];
+    const containsKeyword = keywords.some((keyword) =>
+      bodyText.includes(keyword)
+    );
+    if (containsKeyword) {
+      switch (bodyText) {
+        case "1":
+          return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
+        case "2":
+          return ctxFn.gotoFlow(finalFlow);
       }
+    } else {
+      return ctxFn.fallBack(
+        "Tienes que seleccionar una de las opciones disponibles 😁.\n\n1️⃣. Sí\n2️⃣. No"
+      );
     }
-  );
+  });
 
 const revendedorAromatizacionConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {
@@ -56,66 +58,71 @@ const revendedorAromatizacionConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
       body: "🛍️ *Compra mínima* de *$50.000* para apertura de cuenta.\n💰 *Forma de pago*: Efectivo | Transferencia con un 5% de recargo.\n🕥 *Las compras se realizan*: de Lunes a viernes de 8 hs a 18 hs. (no se atienden revendedores los días sábados).\n📋 Se debe *solicitar Planilla para Pedidos* solo para envíos fuera de la ciudad de Villa Constitución.\n🛒 *Armado del pedido*: entre 48/72 hs.\n🚛 *Envío*: a cargo del cliente (comisionista/cadete).\n🧑🏽‍💻 *Asesoramiento y cotizaciones*: de Lunes a Viernes de 8 hs. a 18 hs. en 📍 Urquiza 721, Villa Constitución.",
       delay: 6000
     }]);
-  })
-  .addAnswer(
-    ["Otra consulta? 🤔", "1️⃣. Sí", "2️⃣. No"],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = ["1","2"];
-      const containsKeyword = keywords.some((keyword) =>
-        bodyText.includes(keyword)
-      );
 
-      if (containsKeyword) {
-        switch (bodyText) {
-          case "1":
-            return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
-          case "2":
-            return ctxFn.gotoFlow(finalFlow);
-        }
-      } else {
-        return ctxFn.fallBack(
-          "Tienes que seleccionar una de las opciones disponibles 😁.\n1️⃣. Sí\n2️⃣. No"
-        );
+    await flowDynamic([{
+      body: "Otra consulta? 🤔\n\n1️⃣. Sí\n2️⃣. No",
+      delay: 2000
+    }]);
+  })
+  .addAction({capture:true}, async (ctx, ctxFn) => {
+    const bodyText: string = ctx.body.toLowerCase();
+    const keywords: string[] = ["1","2"];
+    const containsKeyword = keywords.some((keyword) =>
+      bodyText.includes(keyword)
+    );
+
+    if (containsKeyword) {
+      switch (bodyText) {
+        case "1":
+          return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
+        case "2":
+          return ctxFn.gotoFlow(finalFlow);
       }
+    } else {
+      return ctxFn.fallBack(
+        "Tienes que seleccionar una de las opciones disponibles 😁.\n\n1️⃣. Sí\n2️⃣. No"
+      );
     }
-  );
+  });
 
 const revendedorAromatizacionConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {
     reset(ctx, flowDynamic, 300000);
-  })
-  .addAnswer(
-    "Podes visitar en nuestro sitio web el catálogo exclusivo para revendedores! 😉",
-    { delay: 1000 }
-  )
-  .addAnswer(
-    "https://catalogos.cipresdigital.com.ar/catalogo/revendedor/AROMATIZACION",
-    { delay: 1000 }
-  )
-  .addAnswer(
-    ["Otra consulta?", "1️⃣. Sí", "2️⃣. No"],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = ["1", "2"];
-      const containsKeyword = keywords.some((keyword) =>
-        bodyText.includes(keyword)
-      );
 
-      if (containsKeyword) {
-        switch (bodyText) {
-          case "1":
-            return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
-          case "2":
-            return ctxFn.gotoFlow(finalFlow);
-        }
-      } else {
-        return ctxFn.fallBack("Tienes que seleccionar una de las opciones. \n1️⃣. Sí\n2️⃣. No");
+    await flowDynamic([{
+      body: "Podes visitar en nuestro sitio web el catálogo exclusivo para revendedores! 😉",
+      delay: 2000
+    }]);
+
+    await flowDynamic([{
+      body: "https://catalogos.cipresdigital.com.ar/catalogo/revendedor/AROMATIZACION",
+      delay: 2000
+    }]);
+
+    await flowDynamic([{
+      body: "Otra consulta? 🤔\n\n1️⃣. Sí\n2️⃣. No",
+      delay: 1000
+    }]);
+
+  })
+  .addAction({ capture: true }, async (ctx, ctxFn) => {
+    const bodyText: string = ctx.body.toLowerCase();
+    const keywords: string[] = ["1", "2"];
+    const containsKeyword = keywords.some((keyword) =>
+      bodyText.includes(keyword)
+    );
+
+    if (containsKeyword) {
+      switch (bodyText) {
+        case "1":
+          return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
+        case "2":
+          return ctxFn.gotoFlow(finalFlow);
       }
+    } else {
+      return ctxFn.fallBack("Tienes que seleccionar una de las opciones. \n\n1️⃣. Sí\n2️⃣. No");
     }
-  );
+  });
 
 const revendedorAromatizacionConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {

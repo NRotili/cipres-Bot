@@ -20,12 +20,10 @@ const mensajeFueraHorarioFlow = addKeyword(EVENTS.ACTION)
       body: "Dejanos tu inquietud en *1 mensaje*. 😁",
       delay: 3000,
     }]);
-  })
-  .addAction(async (ctx, { flowDynamic, state }) => {
     reset(ctx, flowDynamic, 300000);
-    await state.update({ status: "1" });
   })
-  .addAction(async (ctx, { flowDynamic, state, gotoFlow }) => {
+  .addAction({capture: true},async (ctx, { flowDynamic, state, gotoFlow }) => {
+    await state.update({ status: "1" });
     config();
     try {
       const myState = state.getMyState();

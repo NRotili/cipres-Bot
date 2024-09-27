@@ -1,7 +1,6 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { empresaFlow } from "./empresa.flow";
-import { revendedorFlow } from "./revendedor.flow";
-import { consumidorFinalConsultaFlow, consumidorFinalFlow } from "./consumidorFinal.flow";
+import { consumidorFinalConsultaFlow} from "./consumidorFinal.flow";
 import { reset } from "~/utils/idle-custom";
 import { revendedorAromatizacionConsultaFlow } from "./revendedorAromatizacion.flow";
 import { revendedorGeneralConsultaFlow } from "./revendedorGeneral.flow";

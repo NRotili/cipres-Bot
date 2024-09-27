@@ -4,13 +4,12 @@ import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { welcomeFlow } from './flows/welcome.flow'
 import { empresaConsultaFlow, empresaFlow, empresaPedidoFlow } from './flows/empresa.flow'
 import { backFlow } from './flows/back.flow'
-import { revendedorFlow } from './flows/revendedor.flow'
-import { revendedorAromatizacionConsultaFlow, revendedorAromatizacionFlow, revendedorAromatizacionPedidoFlow, revendedorAromatizacionPedidoRecibidoFlow } from './flows/revendedorAromatizacion.flow'
+import { revendedorAromatizacionConsultaFlow,  revendedorAromatizacionPedidoFlow, revendedorAromatizacionPedidoRecibidoFlow } from './flows/revendedorAromatizacion.flow'
 import { revendedorAromatizacionConsultaAsesorFlow, revendedorAromatizacionConsultaHorariosFlow, revendedorAromatizacionConsultaMetodologiaFlow, revendedorAromatizacionConsultaPreciosFlow } from './flows/revendedorAromatizacionConsulta.flow'
 import { idleFlow, stop } from './utils/idle-custom'
-import { revendedorGeneralConsultaFlow, revendedorGeneralFlow, revendedorGeneralPedidoFlow } from './flows/revendedorGeneral.flow'
+import { revendedorGeneralConsultaFlow, revendedorGeneralPedidoFlow } from './flows/revendedorGeneral.flow'
 import { revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow } from './flows/revendedorGeneralConsulta.flow'
-import { consumidorFinalConsultaFlow, consumidorFinalFlow, consumidorFinalPedidoFlow } from './flows/consumidorFinal.flow'
+import { consumidorFinalConsultaFlow, consumidorFinalPedidoFlow } from './flows/consumidorFinal.flow'
 import { consumidorFinalConsultaAsesorFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow } from './flows/consumidorFinalConsulta.flow'
 import { audioFlow } from './flows/audio.flow'
 import { config } from 'dotenv'
@@ -42,8 +41,6 @@ const main = async () => {
         empresaFlow,
         empresaConsultaFlow, 
         empresaPedidoFlow,
-        revendedorFlow, 
-        revendedorAromatizacionFlow,
         revendedorAromatizacionPedidoFlow,
         revendedorAromatizacionPedidoRecibidoFlow,
         revendedorAromatizacionConsultaFlow,
@@ -51,9 +48,8 @@ const main = async () => {
         revendedorAromatizacionConsultaMetodologiaFlow,
         revendedorAromatizacionConsultaPreciosFlow,
         revendedorAromatizacionConsultaHorariosFlow,
-        revendedorGeneralFlow,
         revendedorGeneralPedidoFlow,
-        revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow, consumidorFinalFlow, consumidorFinalConsultaFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaAsesorFlow,
+        revendedorGeneralConsultaAsesorFlow, revendedorGeneralConsultaFlow, revendedorGeneralConsultaHorariosFlow, revendedorGeneralConsultaMetodologiaFlow, revendedorGeneralConsultaPreciosFlow, consumidorFinalConsultaFlow, consumidorFinalConsultaHorariosFlow, consumidorFinalConsultaPreciosFlow, consumidorFinalConsultaEnviosFlow, consumidorFinalConsultaAsesorFlow,
         backFlow, idleFlow, mensajeFueraHorarioFlow,consumidorFinalPedidoFlow])
     
     const adapterProvider = createProvider(Provider)

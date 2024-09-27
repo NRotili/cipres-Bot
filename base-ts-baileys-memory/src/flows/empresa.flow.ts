@@ -74,13 +74,19 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic, state }) => {
     await state.update({tipo: "Empresa"});
     reset(ctx, flowDynamic, 300000);
+
+    await flowDynamic([{
+      body: "Perfecto, qué deseas realizar?",
+      delay: 1000
+    }]);
+
+    await flowDynamic([{
+      body: "1️⃣. Consulta\n2️⃣. Pedido\n9️⃣. Volver",
+      delay: 1000
+    }]);
   })
-  .addAnswer("Perfecto, qué deseas realizar?", { delay: 1000 })
-  .addAnswer(
-    ["1️⃣. Consulta", "2️⃣. Pedido", "9️⃣. Volver"],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
+  .addAction({capture: true}, async (ctx, ctxFn) => {
+    const bodyText: string = ctx.body.toLowerCase();
       const keywords: string[] = [
         "1",
         "2",
@@ -110,8 +116,7 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
       } else {
         return ctxFn.fallBack("Debes seleccionar una opción válida.\n 1️⃣. Consulta\n 2️⃣. Pedido\n 9️⃣. Volver");
       }
-    }
-  );
+  });
 
 export {
   empresaFlow,

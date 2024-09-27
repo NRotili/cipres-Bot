@@ -49,47 +49,50 @@ const revendedorGeneralConsultaFlow = addKeyword(EVENTS.ACTION)
     .addAction(async (ctx, { flowDynamic, state }) => {
         await state.update({ tipo: "Revendedor - General" });
         reset(ctx, flowDynamic, 300000);
+
+        await flowDynamic([{
+            body: "Ok, selecciona la opción... 🧐",
+            delay: 1000
+        }]);
+
+        await flowDynamic([{
+            body: "1️⃣. Metodología\n2️⃣. Precios\n3️⃣. Horarios\n4️⃣. Asesor\n5️⃣. Pedido\n9️⃣. Volver",
+            delay: 2000
+        }]);
+
     })
-    .addAnswer("Ok! Selecciona la opción...", { delay: 1000 })
-    .addAnswer(['1️⃣. Metodología',
-        '2️⃣. Precios',
-        '3️⃣. Horarios',
-        '4️⃣. Asesor',
-        '5️⃣. Pedido',
-        '9️⃣. Volver'], { delay: 1000, capture: true },
-        async (ctx, ctxFn) => {
-            const bodyText: string = ctx.body.toLowerCase();
-            const keywords: string[] = ["1", "2", "3", "4", "5", "9"];
-            const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
+    .addAction({ capture: true }, async (ctx, ctxFn) => {
+        const bodyText: string = ctx.body.toLowerCase();
+        const keywords: string[] = ["1", "2", "3", "4", "5", "9"];
+        const containsKeyword = keywords.some(keyword => bodyText.includes(keyword));
 
-            if (containsKeyword) {
-                switch (bodyText) {
-                    case '1':
-                        return ctxFn.gotoFlow(revendedorGeneralConsultaMetodologiaFlow);
-                    case '2':
-                        return ctxFn.gotoFlow(revendedorGeneralConsultaPreciosFlow);
-                    case '3':
-                        return ctxFn.gotoFlow(revendedorGeneralConsultaHorariosFlow);
-                    case '4':
-                        if (esHorarioValido()) {
-                            return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
-                        } else {
-                            return ctxFn.gotoFlow(revendedorGeneralConsultaAsesorFlow);
-                        }
-                    case '5':
-                        if (esHorarioValido()) {
-                            return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
-                        } else {
-                            return ctxFn.gotoFlow(revendedorGeneralPedidoFlow);
-                        }
-                    case '9':
-                        return ctxFn.gotoFlow(backFlow);
-                }
-            } else {
-                return ctxFn.fallBack("Esa opción no es válida. 🤯\n1️⃣. Metodología\n2️⃣. Precios\n3️⃣. Horarios\n4️⃣. Asesor\n5️⃣. Pedido\n9️⃣. Volver");
+        if (containsKeyword) {
+            switch (bodyText) {
+                case '1':
+                    return ctxFn.gotoFlow(revendedorGeneralConsultaMetodologiaFlow);
+                case '2':
+                    return ctxFn.gotoFlow(revendedorGeneralConsultaPreciosFlow);
+                case '3':
+                    return ctxFn.gotoFlow(revendedorGeneralConsultaHorariosFlow);
+                case '4':
+                    if (esHorarioValido()) {
+                        return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+                    } else {
+                        return ctxFn.gotoFlow(revendedorGeneralConsultaAsesorFlow);
+                    }
+                case '5':
+                    if (esHorarioValido()) {
+                        return ctxFn.gotoFlow(mensajeFueraHorarioFlow);
+                    } else {
+                        return ctxFn.gotoFlow(revendedorGeneralPedidoFlow);
+                    }
+                case '9':
+                    return ctxFn.gotoFlow(backFlow);
             }
-        });
-
+        } else {
+            return ctxFn.fallBack("Esa opción no es válida. 🤯\n\n1️⃣. Metodología\n2️⃣. Precios\n3️⃣. Horarios\n4️⃣. Asesor\n5️⃣. Pedido\n9️⃣. Volver");
+        }
+    });
 
 
 export { revendedorGeneralConsultaFlow, revendedorGeneralPedidoFlow };
