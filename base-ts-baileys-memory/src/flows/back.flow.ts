@@ -1,17 +1,16 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
 import { empresaFlow } from "./empresa.flow";
 import { revendedorFlow } from "./revendedor.flow";
-import { consumidorFinalFlow } from "./consumidorFinal.flow";
+import { consumidorFinalConsultaFlow, consumidorFinalFlow } from "./consumidorFinal.flow";
 import { reset } from "~/utils/idle-custom";
-import { revendedorAromatizacionFlow } from "./revendedorAromatizacion.flow";
-import { revendedorGeneralFlow } from "./revendedorGeneral.flow";
+import { revendedorAromatizacionConsultaFlow } from "./revendedorAromatizacion.flow";
+import { revendedorGeneralConsultaFlow } from "./revendedorGeneral.flow";
 
 const backFlow = addKeyword(EVENTS.ACTION)
     .addAction(async (ctx, { flowDynamic }) => {
         reset(ctx, flowDynamic, 300000);
     })
-    .addAnswer("Buenísimo, estamos volviendo al menú principal", { delay: 500 })
-    .addAnswer("Qué tipo de cliente eres? 🧐", { delay: 500 })
+    .addAnswer("Buenísimo, estamos volviendo al menú principal\nQué tipo de cliente eres? 🧐", { delay: 500 })
     .addAnswer([
         '1️⃣. Empresa/Institución/Club', 
         '2️⃣. Revendedor Aromatización',
@@ -26,14 +25,14 @@ const backFlow = addKeyword(EVENTS.ACTION)
                     case '1':
                         return ctxFn.gotoFlow(empresaFlow);
                     case '2':
-                        return ctxFn.gotoFlow(revendedorAromatizacionFlow);
+                        return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
                     case '3':
-                        return ctxFn.gotoFlow(revendedorGeneralFlow);
+                        return ctxFn.gotoFlow(revendedorGeneralConsultaFlow);
                     case '4':
-                        return ctxFn.gotoFlow(consumidorFinalFlow);
+                        return ctxFn.gotoFlow(consumidorFinalConsultaFlow);
                 }
             } else {
-                return ctxFn.fallBack("Ups, parece que tu respuesta no está entre mis opciones 😅")
+                return ctxFn.fallBack("Ups, parece que tu respuesta no está entre mis opciones 😅\n1️⃣. Empresa/Institución/Club\n2️⃣. Revendedor Aromatización\n3️⃣. Revendedor General\n4️⃣. Consumidor Final")
             }
         })
 

@@ -28,14 +28,16 @@ const revendedorGeneralConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
           tipo: "Revendedor - General - Consulta",
         }
       );
-      await flowDynamic(
-        "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad."
-      );
-      await flowDynamic(
-        "Tu posición en la lista de espera es: *" +
-          response.data.cantEsperando +
-          "*, por favor aguarda a ser atendido. 😁"
-      );
+      await flowDynamic([{
+        body: "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad.",
+        delay: 2000
+      }]);
+      await flowDynamic([{
+        body: "Tu posición en la lista de espera es: *" +
+        response.data.cantEsperando +
+        "*, por favor aguarda a ser atendido. 😁",
+        delay: 3000
+      }]);
     } catch (error) {
       console.log("Error al cargar consulta Rev Gen: "+error);
     }

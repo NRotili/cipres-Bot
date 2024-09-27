@@ -1,5 +1,4 @@
 import { addKeyword, EVENTS } from "@builderbot/bot";
-import { revendedorFlow } from "./revendedor.flow";
 import {
   revendedorAromatizacionConsultaAsesorFlow,
   revendedorAromatizacionConsultaHorariosFlow,
@@ -36,6 +35,7 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
         "2",
         "3",
         "4",
+        "5",
         "9",
       ];
       const containsKeyword = keywords.some((keyword) =>
@@ -68,7 +68,7 @@ const revendedorAromatizacionConsultaFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(backFlow);
         }
       } else {
-        return ctxFn.fallBack("Debes seleccionar una opción válida");
+        return ctxFn.fallBack("Debes seleccionar una opción válida.\n1️⃣. Metodología\n2️⃣. Precios\n3️⃣. Horarios\n4️⃣. Asesor\n5️⃣. Pedido\n9️⃣. Volver");
       }
     }
   );
@@ -87,21 +87,21 @@ const revendedorAromatizacionPedidoRecibidoFlow = addKeyword(EVENTS.DOCUMENT)
           tipo: "Revendedor - Aromatización - Pedido",
         }
       );
-      await flowDynamic(
-        "Tu posición en la lista de espera es: *" +
-        response.data.cantEsperando +
-        "*, por favor aguarda a ser atendido. 😁"
-      );
+
+      await flowDynamic([{
+        body: "Gracias por tu pedido! 🤗 \nTe estoy derivando con nuestro personal de atención. 😎",
+        delay: 2000
+      }]);
+      await flowDynamic([{
+        body: "Tu posición en la lista de espera es: *" + response.data.cantEsperando + "*, por favor aguarda a ser atendido. 😁",
+        delay: 3000
+      }]);
+
     } catch (error) {
       console.log("Error al recibir pedido desde Rev Ar: "+error);
     }
-    
-  })
-  .addAnswer("¡Gracias por tu pedido! 🤗", { delay: 1000 })
-  .addAnswer("Te estoy derivando con nuestro personal de atención. 😎", {
-    delay: 1000,
-  });
 
+  });
 
 const revendedorAromatizacionPedidoFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { blacklist }) => {
@@ -109,13 +109,7 @@ const revendedorAromatizacionPedidoFlow = addKeyword(EVENTS.ACTION)
     blacklist.add(ctx.from);
   })
   .addAnswer(
-    "Te vamos a enviar un excel para que lo completes con tus datos y el pedido. 💪🏽",
-    {
-      delay: 1000,
-    }
-  )
-  .addAnswer(
-    "Por favor, envíanos el archivo completado y sin modificar el formato para procesar tu pedido. 🙏",
+    "Te vamos a enviar un excel para que lo completes con tus datos y el pedido. 💪🏽\nPor favor, envíanos el archivo completado y sin modificar el formato para procesar tu pedido. 🙏",
     {
       delay: 1000,
       media:
@@ -133,42 +127,7 @@ const revendedorAromatizacionPedidoFlow = addKeyword(EVENTS.ACTION)
     return ctxFn.gotoFlow(revendedorAromatizacionPedidoRecibidoFlow);
   });
 
-const revendedorAromatizacionFlow = addKeyword(EVENTS.ACTION)
-  .addAction(async (ctx, { flowDynamic }) => {
-    reset(ctx, flowDynamic, 300000);
-  })
-  .addAnswer("Bien, qué deseas?", { delay: 1000 })
-  .addAnswer(
-    ["1️⃣. Consulta", "2️⃣. Pedido", "9️⃣. Volver"],
-    { delay: 1000, capture: true },
-    async (ctx, ctxFn) => {
-      const bodyText: string = ctx.body.toLowerCase();
-      const keywords: string[] = [
-        "1",
-        "2",
-        "9",
-      ];
-      const containsKeyword = keywords.some((keyword) =>
-        bodyText.includes(keyword)
-      );
-
-      if (containsKeyword) {
-        switch (bodyText) {
-          case "1":
-            return ctxFn.gotoFlow(revendedorAromatizacionConsultaFlow);
-          case "2":
-            return ctxFn.gotoFlow(revendedorAromatizacionPedidoFlow);
-          case "9":
-            return ctxFn.gotoFlow(revendedorFlow);
-        }
-      } else {
-        return ctxFn.fallBack("Debes seleccionar una opción válida");
-      }
-    }
-  );
-
 export {
-  revendedorAromatizacionFlow,
   revendedorAromatizacionConsultaFlow,
   revendedorAromatizacionPedidoRecibidoFlow,
   revendedorAromatizacionPedidoFlow,

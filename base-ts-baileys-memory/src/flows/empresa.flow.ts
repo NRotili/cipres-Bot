@@ -29,14 +29,14 @@ const empresaConsultaFlow = addKeyword(EVENTS.ACTION)
           consulta: ctx.body,
         }
       );
-      await flowDynamic(
-        "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad."
-      );
-      await flowDynamic(
-        "Tu posición en la lista de espera es: *" +
-          response.data.cantEsperando +
-          "*, por favor aguarda a ser atendido. 😁"
-      );
+      await flowDynamic([{
+        body: "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad.",
+        delay: 3000
+      }]);
+      await flowDynamic([{
+        body: "Tu posición en la lista de espera es: *" + response.data.cantEsperando + "*, por favor aguarda a ser atendido. 😁",
+        delay: 3000
+      }]);
     } catch (error) {
       console.log("Error al cargar consulta desde empresa: "+error);
     }
@@ -60,11 +60,10 @@ const empresaPedidoFlow = addKeyword(EVENTS.ACTION)
           tipo: "Empresa - Pedido",
         }
       );
-      await flowDynamic(
-        "Tu posición en la lista de espera es: *" +
-          response.data.cantEsperando +
-          "*, por favor aguarda a ser atendido. 😁"
-      );
+      await flowDynamic([{
+        body: "Tu posición en la lista de espera es: *" + response.data.cantEsperando + "*, por favor aguarda a ser atendido. 😁",
+        delay: 3000
+      }]);
     } catch (error) {
       console.log("Error al cargar pedido desde empresa: "+error);
     }
@@ -109,7 +108,7 @@ const empresaFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(backFlow);
         }
       } else {
-        return ctxFn.fallBack("Debes seleccionar una opción válida");
+        return ctxFn.fallBack("Debes seleccionar una opción válida.\n 1️⃣. Consulta\n 2️⃣. Pedido\n 9️⃣. Volver");
       }
     }
   );

@@ -64,7 +64,7 @@ const consumidorFinalConsultaFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(backFlow);
         }
       } else {
-        return ctxFn.fallBack("Debes seleccionar una opción válida 🤓");
+        return ctxFn.fallBack("Debes seleccionar una opción válida 🤓\n1️⃣. Precios\n2️⃣. Horarios\n3️⃣. Envíos\n4️⃣. Asesor\n5️⃣. Pedido\n9️⃣. Volver");
       }
     }
   );
@@ -87,11 +87,11 @@ const consumidorFinalPedidoFlow = addKeyword(EVENTS.ACTION)
           tipo: "Consumidor final - Pedido",
         }
       );
-      await flowDynamic(
-        "Tu posición en la lista de espera es: *" +
-        response.data.cantEsperando +
-        "*, por favor aguarda a ser atendido. 😁"
-      );
+      await flowDynamic([{
+        body: "Tu posición en la lista de espera es: *" +response.data.cantEsperando +"*, por favor aguarda a ser atendido. 😁",
+        delay:3000
+      }]);
+
     } catch (error) {
       console.log("Error al derivar pedido desde CF: "+error);
     }

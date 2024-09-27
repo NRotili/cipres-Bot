@@ -27,14 +27,15 @@ const consumidorFinalConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
           tipo: "Consumidor Final - Consulta",
         }
       );
-      await flowDynamic(
-        "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad."
-      );
-      await flowDynamic(
-        "Tu posición en la lista de espera es: *" +
-          response.data.cantEsperando +
-          "*, por favor aguarda a ser atendido. 😁"
-      );
+      await flowDynamic([{
+        body: "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad.",
+        delay:3000
+    }]);
+      await flowDynamic([{
+        body: "Tu posición en la lista de espera es: *" + response.data.cantEsperando +"*, por favor aguarda a ser atendido. 😁",
+        delay:3000
+
+      }]);
     } catch (error) {
       console.log("Error al cargar consulta desde CF: "+error);
     }
@@ -72,7 +73,7 @@ const consumidorFinalConsultaEnviosFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(finalFlow);
             }
         } else {
-            return ctxFn.fallBack("Debes seleccionar una opción válida");
+            return ctxFn.fallBack("Debes seleccionar una opción válida\n 1️⃣. Sí\n 2️⃣. No");
         }
     });
 
@@ -96,7 +97,7 @@ const consumidorFinalConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(finalFlow);
             }
         } else {
-            return ctxFn.fallBack("Parece que esa opción no es válida. 🤯");
+            return ctxFn.fallBack("Parece que esa opción no es válida. 🤯\n 1️⃣. Sí\n 2️⃣. No");
         }
     });
 
@@ -122,7 +123,7 @@ const consumidorFinalConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
                     return ctxFn.gotoFlow(finalFlow);
             }
         } else {
-            return ctxFn.fallBack("Tienes que seleccionar una de las opciones");
+            return ctxFn.fallBack("Tienes que seleccionar una de las opciones.\n 1️⃣. Sí\n 2️⃣. No");
         }
     });
 

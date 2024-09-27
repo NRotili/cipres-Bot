@@ -36,7 +36,7 @@ const revendedorAromatizacionConsultaHorariosFlow = addKeyword(EVENTS.ACTION)
         }
       } else {
         return ctxFn.fallBack(
-          "Tienes que seleccionar una de las opciones disponibles 😁"
+          "Tienes que seleccionar una de las opciones disponibles 😁.\n1️⃣. Sí\n2️⃣. No"
         );
       }
     }
@@ -46,25 +46,17 @@ const revendedorAromatizacionConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
   .addAction(async (ctx, { flowDynamic }) => {
     reset(ctx, flowDynamic, 300000);
   })
-  .addAnswer(
-    [
-      "Somos Distribuidores Oficiales de Saphirus🥇",
-      "Forma parte de nuestro staff de revendedores y emprende tu propio negocio 🙌🏽",
-    ],
-    { delay: 1000 }
-  )
-  .addAnswer(
-    [
-      "🛍️ *Compra mínima* de *$50.000* para apertura de cuenta.",
-      "💰 *Forma de pago*: Efectivo | Transferencia con un 5% de recargo.",
-      "🕥 *Las compras se realizan*: de Lunes a viernes de 8 hs a 18 hs. (no se atienden revendedores los días sábados).",
-      "📋 Se debe *solicitar Planilla para Pedidos* solo para envíos fuera de la ciudad de Villa Constitución.",
-      "🛒 *Armado del pedido*: entre 48/72 hs.",
-      "🚛 *Envío*: a cargo del cliente (comisionista/cadete).",
-      "🧑🏽‍💻 *Asesoramiento y cotizaciones*: de Lunes a Viernes de 8 hs. a 18 hs. en 📍 Urquiza 721, Villa Constitución.",
-    ],
-    { delay: 1000 }
-  )
+  .addAction(async (ctx, { flowDynamic }) => {
+    await flowDynamic([{
+      body: "Somos Distribuidores Oficiales de Saphirus🥇\nForma parte de nuestro staff de revendedores y emprende tu propio negocio 🙌🏽",
+      delay: 2000
+    }]);
+
+    await flowDynamic([{
+      body: "🛍️ *Compra mínima* de *$50.000* para apertura de cuenta.\n💰 *Forma de pago*: Efectivo | Transferencia con un 5% de recargo.\n🕥 *Las compras se realizan*: de Lunes a viernes de 8 hs a 18 hs. (no se atienden revendedores los días sábados).\n📋 Se debe *solicitar Planilla para Pedidos* solo para envíos fuera de la ciudad de Villa Constitución.\n🛒 *Armado del pedido*: entre 48/72 hs.\n🚛 *Envío*: a cargo del cliente (comisionista/cadete).\n🧑🏽‍💻 *Asesoramiento y cotizaciones*: de Lunes a Viernes de 8 hs. a 18 hs. en 📍 Urquiza 721, Villa Constitución.",
+      delay: 6000
+    }]);
+  })
   .addAnswer(
     ["Otra consulta? 🤔", "1️⃣. Sí", "2️⃣. No"],
     { delay: 1000, capture: true },
@@ -84,7 +76,7 @@ const revendedorAromatizacionConsultaMetodologiaFlow = addKeyword(EVENTS.ACTION)
         }
       } else {
         return ctxFn.fallBack(
-          "Tienes que seleccionar una de las opciones disponibles 😁"
+          "Tienes que seleccionar una de las opciones disponibles 😁.\n1️⃣. Sí\n2️⃣. No"
         );
       }
     }
@@ -120,7 +112,7 @@ const revendedorAromatizacionConsultaPreciosFlow = addKeyword(EVENTS.ACTION)
             return ctxFn.gotoFlow(finalFlow);
         }
       } else {
-        return ctxFn.fallBack("Tienes que seleccionar una de las opciones");
+        return ctxFn.fallBack("Tienes que seleccionar una de las opciones. \n1️⃣. Sí\n2️⃣. No");
       }
     }
   );
@@ -147,14 +139,15 @@ const revendedorAromatizacionConsultaAsesorFlow = addKeyword(EVENTS.ACTION)
           tipo: "Revendedor - Aromatización - Consulta",
         }
       );
-      await flowDynamic(
-        "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad."
-      );
-      await flowDynamic(
-        "Tu posición en la lista de espera es: *" +
-          response.data.cantEsperando +
-          "*, por favor aguarda a ser atendido. 😁"
-      );
+      await flowDynamic([{
+        body: "Ya hemos recibido tu consulta, un agente se pondrá en contacto contigo a la brevedad.",
+        delay: 2000
+      }]);
+      await flowDynamic([{
+        body: "Tu posición en la lista de espera es: *" + response.data.cantEsperando + "*, por favor aguarda a ser atendido. 😁",
+        delay: 3000
+      }]);
+
     } catch (error) {
       console.log("Error al cargar consulta desde Rev Ar: "+error);
     }

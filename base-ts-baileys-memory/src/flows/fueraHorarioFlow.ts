@@ -5,20 +5,25 @@ import { reset } from "~/utils/idle-custom";
 import { finalFlow } from "./final.flow";
 
 const mensajeFueraHorarioFlow = addKeyword(EVENTS.ACTION)
-  .addAnswer("En estos momentos el local se encuentra cerrado. 😥", {
-    delay: 2000,
+  .addAction(async (ctx, { flowDynamic }) => {
+    await flowDynamic([{
+      body: "En estos momentos el local se encuentra cerrado. 😥",
+      delay: 2000,
+    }]);
+
+    await flowDynamic([{
+      body: "Pero podes dejarnos tu mensaje y cuando volvamos a estar disponible, nos ponemos en contacto! 😉",
+      delay: 3000,
+    }]);
+
+    await flowDynamic([{
+      body: "Dejanos tu inquietud en *1 mensaje*. 😁",
+      delay: 3000,
+    }]);
   })
-  .addAnswer(
-    "Pero podes dejarnos tu mensaje y cuando volvamos a estar disponible, nos ponemos en contacto! 😉",
-    { delay: 3000 }
-  )
   .addAction(async (ctx, { flowDynamic, state }) => {
     reset(ctx, flowDynamic, 300000);
     await state.update({ status: "1" });
-  })
-  .addAnswer("Dejanos tu inquietud en *1 mensaje*. 😁", {
-    capture: true,
-    delay: 1000,
   })
   .addAction(async (ctx, { flowDynamic, state, gotoFlow }) => {
     config();
@@ -32,14 +37,13 @@ const mensajeFueraHorarioFlow = addKeyword(EVENTS.ACTION)
           consulta: ctx.body,
         }
       );
-      await flowDynamic(
-        "Tu mensaje ha sido recibido, nos pondremos en contacto pronto!. 😁"
-      );
-
+      await flowDynamic([{
+        body: "Tu mensaje ha sido recibido, nos pondremos en contacto pronto!. 😁",
+        delay: 2000
+      }]);
 
     } catch (error) {
       console.log("Error desde fueraHorarioFlow: "+error);
-      await flowDynamic("Estamos teniendo problemas para recibir tu mensaje, intenta más tarde. 😥");
     }
     
     return gotoFlow(finalFlow);

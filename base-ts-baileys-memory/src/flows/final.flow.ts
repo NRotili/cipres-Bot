@@ -7,12 +7,12 @@ config();
 const finalFlow = addKeyword(EVENTS.ACTION)
   .addAnswer(
     [
-      "Espero haberte ayudado. 😁",
-      "Cualquier otra cosa que necesites, aquí estaré. 😊",
+      "",
+      "",
     ],
     { delay: 2000 }
   )
-  .addAction(async (ctx, { state, endFlow }) => {
+  .addAction(async (ctx, { state, endFlow, flowDynamic }) => {
     stop(ctx);
 
     const myState = state.getMyState();
@@ -26,7 +26,15 @@ const finalFlow = addKeyword(EVENTS.ACTION)
       }
     }
 
-    return endFlow("Hasta luego! 👋");
+    await flowDynamic([{
+      body: "Espero haberte ayudado. 😁\nCualquier otra cosa que necesites, aquí estaré. 😊",
+      delay: 3000,
+    }]);
+    await flowDynamic([{
+      body: "¡Hasta la próxima! 👋",
+      delay: 3000,
+    }]);
+    return endFlow();
   });
 
 export { finalFlow };
